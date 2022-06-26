@@ -10,7 +10,7 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const Products = (props) => {
+const Products = () => {
   return (
     <Container>
       {popularProducts.map((item) => (

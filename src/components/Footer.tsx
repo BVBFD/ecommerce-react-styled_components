@@ -84,7 +84,7 @@ const Payment = styled.img`
   width: 50%;
 `;
 
-const Footer = (props) => {
+const Footer = () => {
   return (
     <Container>
       <Left>

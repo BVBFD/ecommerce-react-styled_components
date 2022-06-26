@@ -116,7 +116,7 @@ const Button = styled.button`
   }
 `;
 
-const Product = (props) => {
+const Product = () => {
   return (
     <Container>
       <Navbar />

@@ -38,7 +38,7 @@ const Select = styled.select`
 
 const Option = styled.option``;
 
-const ProductList = (props) => {
+const ProductList = () => {
   return (
     <Container>
       <Navbar />

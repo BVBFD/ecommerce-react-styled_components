@@ -6,6 +6,14 @@ import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import { mobile } from '../responsive';
 
+interface SummaryItemProps {
+  type?: string;
+}
+
+interface TopButtonProps {
+  status?: 'filled' | undefined;
+}
+
 const Container = styled.div``;
 
 const Wrapper = styled.div`
@@ -25,14 +33,14 @@ const Top = styled.div`
   padding: 20px;
 `;
 
-const TopButton = styled.button`
+const TopButton = styled.button<TopButtonProps>`
   padding: 10px;
   font-weight: 600;
   cursor: pointer;
-  border: ${(props) => props.type === 'filled' && 'none'};
+  border: ${(props) => props.status === 'filled' && 'none'};
   background-color: ${(props) =>
-    props.type === 'filled' ? 'black' : 'transparent'};
-  color: ${(props) => props.type === 'filled' && 'white'};
+    props.status === 'filled' ? 'black' : 'transparent'};
+  color: ${(props) => props.status === 'filled' && 'white'};
 `;
 
 const TopTexts = styled.div`
@@ -134,7 +142,7 @@ const SummaryTitle = styled.h1`
   font-weight: 200;
 `;
 
-const SummaryItem = styled.div`
+const SummaryItem = styled.div<SummaryItemProps>`
   margin: 30px 0px;
   display: flex;
   justify-content: space-between;
@@ -167,7 +175,7 @@ const Cart = () => {
             <TopText>Shopping Bag(2)</TopText>
             <TopText>Your Wishlist (0)</TopText>
           </TopTexts>
-          <TopButton type='filled'>CHECKOUT NOW</TopButton>
+          <TopButton status='filled'>CHECKOUT NOW</TopButton>
         </Top>
         <Bottom>
           <Info>

@@ -2,6 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { mobile } from '../responsive';
 
+interface CategoryItemProps {
+  item: {
+    id: number;
+    img: string;
+    title: string;
+  };
+}
+
 const Container = styled.div`
   flex: 1;
   margin: 3px;
@@ -42,7 +50,7 @@ const Button = styled.button`
   font-weight: 600;
 `;
 
-const CategoryItem = ({ item }) => {
+const CategoryItem = ({ item }: CategoryItemProps) => {
   return (
     <Container>
       <Image src={item.img} />

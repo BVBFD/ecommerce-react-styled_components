@@ -6,6 +6,13 @@ import {
 import React from 'react';
 import styled from 'styled-components';
 
+interface PopularProductItemProps {
+  item: {
+    id: number;
+    img: string;
+  };
+}
+
 const Circle = styled.div`
   width: 200px;
   height: 200px;
@@ -74,7 +81,7 @@ const Icon = styled.div`
   }
 `;
 
-const Product = ({ item }) => {
+const Product = ({ item }: PopularProductItemProps) => {
   return (
     <Container>
       <Circle />

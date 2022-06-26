@@ -54,7 +54,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const Register = (props) => {
+const Register = () => {
   return (
     <Container>
       <Wrapper>

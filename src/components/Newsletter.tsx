@@ -52,7 +52,7 @@ const Button = styled.button`
   }
 `;
 
-const Newsletter = (props) => {
+const Newsletter = () => {
   return (
     <Container>
       <Title>Newsletter</Title>
