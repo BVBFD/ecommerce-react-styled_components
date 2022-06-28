@@ -6,12 +6,12 @@ import {
 import React from 'react';
 import styled from 'styled-components';
 
-interface PopularProductItemProps {
+type PopularProductItemProps = {
   item: {
     id: number;
     img: string;
   };
-}
+};
 
 const Circle = styled.div`
   width: 200px;

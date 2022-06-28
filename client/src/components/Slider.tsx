@@ -4,13 +4,17 @@ import styled from 'styled-components';
 import { sliderItems } from '../data';
 import { mobile } from '../responsive';
 
-interface DirectionProps {
+type DirectionProps = {
   direction: 'right' | 'left';
-}
+};
 
-interface WrapperProps {
+type WrapperProps = {
   slideIndex: number;
-}
+};
+
+type SlideProps = {
+  bg: string;
+};
 
 type Direction = 'right' | 'left';
 
@@ -48,10 +52,6 @@ const Wrapper = styled.div<WrapperProps>`
   transition: all 1.5s ease;
   transform: translateX(${(props) => props.slideIndex * -100}vw);
 `;
-
-interface SlideProps {
-  bg: string;
-}
 
 const Slide = styled.div<SlideProps>`
   width: 100vw;

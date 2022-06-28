@@ -6,13 +6,13 @@ import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import { mobile } from '../responsive';
 
-interface SummaryItemProps {
+type SummaryItemProps = {
   type?: string;
-}
+};
 
-interface TopButtonProps {
+type TopButtonProps = {
   status?: 'filled' | undefined;
-}
+};
 
 const Container = styled.div``;
 

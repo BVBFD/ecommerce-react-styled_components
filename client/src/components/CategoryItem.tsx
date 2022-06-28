@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { mobile } from '../responsive';
 
-interface CategoryItemProps {
+type CategoryItemProps = {
   item: {
     id: number;
     img: string;
     title: string;
   };
-}
+};
 
 const Container = styled.div`
   flex: 1;
