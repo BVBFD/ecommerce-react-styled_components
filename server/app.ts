@@ -4,7 +4,9 @@ import cors from 'cors';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+
 import userRouter from './routes/user';
+import authRouter from './routes/auth';
 
 dotenv.config();
 const app = express();
@@ -14,7 +16,8 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan('tiny'));
 
-app.use('/api/user', userRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/users', userRouter);
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   res.sendStatus(404);
@@ -26,7 +29,7 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 });
 
 mongoose
-  .connect(process.env.MONGO_DB_URL!)
+  .connect(process.env.MONGO_DB_URL!, { dbName: 'ecommerce' })
   .then(() => console.log('Mongo DB Running Start!!'))
   .catch((error) => console.error(error));
 

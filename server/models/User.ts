@@ -1,4 +1,16 @@
 import mongoose from 'mongoose';
+import { Document } from 'mongoose';
+
+interface DocumentResult<T> extends Document {
+  _doc: T;
+}
+
+interface UserImpl extends DocumentResult<UserImpl> {
+  username: string;
+  email: string;
+  password: string;
+  isAdmin: Boolean;
+}
 
 const UserSchema = new mongoose.Schema(
   {
@@ -26,4 +38,4 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model('User', UserSchema);
+export default mongoose.model<UserImpl>('User', UserSchema);
