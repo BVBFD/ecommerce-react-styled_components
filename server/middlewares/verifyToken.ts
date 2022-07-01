@@ -1,30 +1,28 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
-const verifyToken = (
-  error: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.token;
+
   if (authHeader) {
     const token = authHeader.toString().split(' ')[1];
+
     jwt.verify(token, process.env.JWT_SEC!, (error, user) => {
       if (error) res.status(403).json('Token is not valid');
       req.user = user;
       next();
     });
+  } else {
+    return res.status(401).json('You are not authenticated!');
   }
 };
 
 const verifyTokenAndAuthorization = (
-  error: any,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  verifyToken(error, req, res, () => {
+  verifyToken(req, res, () => {
     if (req.user.id === req.params.id || req.user.isAdmin) {
       next();
     } else {
@@ -34,12 +32,11 @@ const verifyTokenAndAuthorization = (
 };
 
 const verifyTokenAndAdmin = (
-  error: any,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  verifyToken(error, req, res, () => {
+  verifyToken(req, res, () => {
     if (req.user.isAdmin) {
       next();
     } else {

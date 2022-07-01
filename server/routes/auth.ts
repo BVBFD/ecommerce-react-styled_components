@@ -52,7 +52,7 @@ router.post(
       const accessToken = jwt.sign(
         {
           id: user!._id,
-          idAdmin: user!.isAdmin,
+          isAdmin: user!.isAdmin,
         },
         process.env.JWT_SEC!,
         {
