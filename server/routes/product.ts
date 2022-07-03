@@ -47,6 +47,7 @@ router.put(
 // Delete
 router.delete(
   '/:id',
+  verifyTokenAndAuthorization,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await Product.findByIdAndDelete(req.params.id);

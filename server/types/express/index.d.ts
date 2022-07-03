@@ -1,6 +1,17 @@
 import express from 'express';
 
 declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      MONGO_DB_URL: string;
+      PORT: number;
+      STRIPE_KEY: string;
+      PASS_SEC: string;
+      JWT_SEC: string;
+      NODE_ENV: 'development' | 'production';
+    }
+  }
+
   namespace Express {
     interface Request {
       user?: Record<Object | String>;

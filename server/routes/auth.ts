@@ -12,7 +12,7 @@ router.post(
       email: req.body.email,
       password: CryptoJS.AES.encrypt(
         req.body.password,
-        process.env.PASS_SEC!
+        process.env.PASS_SEC
       ).toString(),
     });
 
@@ -40,7 +40,7 @@ router.post(
 
       const hashedPassword = CryptoJS.AES.decrypt(
         user!.password,
-        process.env.PASS_SEC!
+        process.env.PASS_SEC
       );
 
       const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
@@ -54,7 +54,7 @@ router.post(
           id: user!._id,
           isAdmin: user!.isAdmin,
         },
-        process.env.JWT_SEC!,
+        process.env.JWT_SEC,
         {
           expiresIn: '3d',
         }

@@ -16,7 +16,7 @@ router.put(
     if (req.body.password) {
       req.body.password = CryptoJS.AES.encrypt(
         req.body.password,
-        process.env.PASS_SEC!
+        process.env.PASS_SEC
       ).toString();
     }
 
