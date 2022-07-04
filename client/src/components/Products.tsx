@@ -12,13 +12,13 @@ type ProductsProps = {
 
 type ProductObjType = {
   categories: string[];
-  color: string;
+  color: string[];
   createdAt: number;
   desc: string;
   img: string;
   inStock: boolean;
   price: number;
-  size: string;
+  size: string[];
   title: string;
   updatedAt: number;
   _v: number;

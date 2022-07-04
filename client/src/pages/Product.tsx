@@ -1,11 +1,15 @@
 import { Add, Remove } from '@mui/icons-material';
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Announcement from '../components/Announcement';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import Newsletter from '../components/Newsletter';
+import { publicRequest } from '../requestMethods';
 import { mobile } from '../responsive';
+import { ProductObjType } from '../components/Products';
 
 const Container = styled.div``;
 
@@ -117,47 +121,61 @@ const Button = styled.button`
 `;
 
 const Product = () => {
+  const location = useLocation();
+  const id = location.pathname.split('/')[2];
+  const [product, setProduct] = useState<ProductObjType>();
+  const [quantity, setQuantity] = useState<number>(1);
+
+  useEffect(() => {
+    const getProduct = async () => {
+      try {
+        const res = await publicRequest.get(`/products/find/${id}`);
+        setProduct(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProduct();
+  }, [id]);
+
   return (
     <Container>
       <Navbar />
       <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src='https://i.ibb.co/S6qMxwr/jean.jpg' />
+          <Image src={product?.img} />
         </ImgContainer>
         <InfoContainer>
-          <Title>Denim Jumpsuit</Title>
-          <Desc>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Delectus
-            aliquam ea expedita illum doloremque dolorum voluptas ad earum
-            voluptate facere, et excepturi porro molestias dolor sit consectetur
-            quam eum vero!
-          </Desc>
-          <Price>$ 20</Price>
+          <Title>{product?.title}</Title>
+          <Desc>{product?.desc}</Desc>
+          <Price>$ {product?.price}</Price>
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              <FilterColor color='black' />
-              <FilterColor color='darkblue' />
-              <FilterColor color='gray' />
+              {product?.color.map((c) => (
+                <FilterColor color={c === 'White' ? 'Beige' : c} key={c} />
+              ))}
             </Filter>
 
             <Filter>
-              <FilterTitle>Color</FilterTitle>
+              <FilterTitle>Size</FilterTitle>
               <FilterSize>
-                <FilterSizeOption>XS</FilterSizeOption>
-                <FilterSizeOption>S</FilterSizeOption>
-                <FilterSizeOption>M</FilterSizeOption>
-                <FilterSizeOption>L</FilterSizeOption>
-                <FilterSizeOption>XL</FilterSizeOption>
+                {product?.size.map((s) => (
+                  <FilterSizeOption key={s}>{s}</FilterSizeOption>
+                ))}
               </FilterSize>
             </Filter>
           </FilterContainer>
           <AddContainer>
             <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
+              <Remove
+                onClick={() =>
+                  setQuantity(quantity > 1 ? quantity - 1 : quantity)
+                }
+              />
+              <Amount>{quantity}</Amount>
+              <Add onClick={() => setQuantity(quantity + 1)} />
             </AmountContainer>
             <Button>ADD TO CART</Button>
           </AddContainer>
