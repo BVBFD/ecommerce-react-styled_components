@@ -1,7 +1,29 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { popularProducts } from '../data';
 import Product from './Product';
+
+type ProductsProps = {
+  cat?: string;
+  filters?: object;
+  sort?: string;
+};
+
+type ProductObjType = {
+  categories: string[];
+  color: string;
+  createdAt: number;
+  desc: string;
+  img: string;
+  inStock: boolean;
+  price: number;
+  size: string;
+  title: string;
+  updatedAt: number;
+  _v: number;
+  _id: string;
+};
 
 const Container = styled.div`
   padding: 20px;
@@ -10,14 +32,75 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const Products = () => {
+const Products = ({ cat, filters, sort }: ProductsProps) => {
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const res = await axios.get(
+          cat
+            ? `http://localhost:8080/api/products?category=${cat}`
+            : `http://localhost:8080/api/products`
+        );
+        setProducts(res.data);
+      } catch (error) {}
+    };
+    getProducts();
+  }, [cat]);
+
+  useEffect(() => {
+    cat &&
+      setFilteredProducts(
+        products.filter((item) =>
+          Object.entries(filters as Object).every(([key, value]) => {
+            const filterValue: Array<string> = item[key];
+            return filterValue.includes(value);
+          })
+        )
+      );
+  }, [products, cat, filters]);
+
+  useEffect(() => {
+    if (sort === 'newest') {
+      setFilteredProducts((prev) =>
+        [...prev].sort(
+          (a: ProductObjType, b: ProductObjType): number =>
+            a.createdAt - b.createdAt
+        )
+      );
+    } else if (sort === 'asc') {
+      setFilteredProducts((prev) =>
+        [...prev].sort(
+          (a: ProductObjType, b: ProductObjType): number => a.price - b.price
+        )
+      );
+    } else {
+      setFilteredProducts((prev) =>
+        [...prev].sort(
+          (a: ProductObjType, b: ProductObjType): number => b.price - a.price
+        )
+      );
+    }
+  }, [sort]);
+
+  console.log(filteredProducts);
+
   return (
     <Container>
-      {popularProducts.map((item) => (
-        <Product item={item} key={item.id} />
-      ))}
+      {cat
+        ? filteredProducts.map((item: ProductObjType) => (
+            <Product item={item} key={item._id} />
+          ))
+        : products
+            .slice(0, 8)
+            .map((item: ProductObjType) => (
+              <Product item={item} key={item._id} />
+            ))}
     </Container>
   );
 };
 
 export default Products;
+export type { ProductObjType };
