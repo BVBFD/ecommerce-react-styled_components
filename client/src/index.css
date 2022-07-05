@@ -4,3 +4,7 @@
   box-sizing: border-box;
   font-family: 'Urbanist', sans-serif;
 }
+
+a {
+  color: black;
+}

@@ -1,7 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ProductObjType } from '../components/Products';
+
+type CartProductObjType = {
+  categories: string[];
+  color: string;
+  createdAt: number;
+  desc: string;
+  img: string;
+  inStock: boolean;
+  price: number;
+  quantity: number;
+  size: string;
+  title: string;
+  updatedAt: number;
+  _v: number;
+  _id: string;
+};
 
 type State = {
-  products: Array<string>;
+  products: Array<CartProductObjType>;
   quantity: number;
   total: number;
 };
