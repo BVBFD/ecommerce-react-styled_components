@@ -1,6 +1,6 @@
 import { Add, Remove } from '@mui/icons-material';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { CSSProperties, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Announcement from '../components/Announcement';
@@ -10,6 +10,10 @@ import Newsletter from '../components/Newsletter';
 import { publicRequest } from '../requestMethods';
 import { mobile } from '../responsive';
 import { ProductObjType } from '../components/Products';
+import { addProduct } from '../redux/cartRedux';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 const Container = styled.div``;
 
@@ -124,19 +128,31 @@ const Product = () => {
   const location = useLocation();
   const id = location.pathname.split('/')[2];
   const [product, setProduct] = useState<ProductObjType>();
-  const [quantity, setQuantity] = useState<number>(1);
+  const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState('');
+  const [size, setSize] = useState('');
+  const dispatch = useDispatch();
+  const state = useSelector((state: RootState) => state.cart);
 
   useEffect(() => {
     const getProduct = async () => {
       try {
         const res = await publicRequest.get(`/products/find/${id}`);
         setProduct(res.data);
+        setColor(res.data?.color[0]);
+        setSize(res.data?.size[0]);
       } catch (error) {
         console.log(error);
       }
     };
     getProduct();
   }, [id]);
+
+  const handleClick = () => {
+    dispatch(addProduct({ ...product, quantity, color, size }));
+  };
+
+  console.log(state);
 
   return (
     <Container>
@@ -154,13 +170,26 @@ const Product = () => {
             <Filter>
               <FilterTitle>Color</FilterTitle>
               {product?.color.map((c) => (
-                <FilterColor color={c === 'White' ? 'Beige' : c} key={c} />
+                <FilterColor
+                  style={
+                    color === c
+                      ? { border: '1px solid black' }
+                      : { border: 'none' }
+                  }
+                  color={c === 'White' ? 'Beige' : c}
+                  key={c}
+                  onClick={() => setColor(c)}
+                  // const targetColor = e.currentTarget.getAttribute('color');
+                  //   targetColor === color
+                  //     ? (e.currentTarget.style.border = '1px solid black')
+                  //     : (e.currentTarget.style.border = 'none');
+                />
               ))}
             </Filter>
 
             <Filter>
               <FilterTitle>Size</FilterTitle>
-              <FilterSize>
+              <FilterSize onChange={(e) => setSize(e.target.value)}>
                 {product?.size.map((s) => (
                   <FilterSizeOption key={s}>{s}</FilterSizeOption>
                 ))}
@@ -177,7 +206,7 @@ const Product = () => {
               <Amount>{quantity}</Amount>
               <Add onClick={() => setQuantity(quantity + 1)} />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button onClick={handleClick}>ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
