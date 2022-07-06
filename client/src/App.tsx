@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Cart from './pages/Cart';
@@ -7,9 +8,11 @@ import Login from './pages/Login';
 import Product from './pages/Product';
 import ProductList from './pages/ProductList';
 import Register from './pages/Register';
+import Success from './pages/Success';
+import { RootState } from './redux/store';
 
 const App = () => {
-  const user = true;
+  const user = useSelector((state: RootState) => state.user.currentUser);
 
   return (
     <BrowserRouter>
@@ -26,6 +29,7 @@ const App = () => {
           path={'/register'}
           element={user ? <Navigate to='/' /> : <Register />}
         />
+        <Route path={'/success'} element={<Success />} />
       </Routes>
     </BrowserRouter>
   );
