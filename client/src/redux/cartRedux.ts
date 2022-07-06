@@ -1,5 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ProductObjType } from '../components/Products';
+import { createSlice } from '@reduxjs/toolkit';
 
 type CartProductObjType = {
   categories: string[];
@@ -41,6 +40,7 @@ const cartSlice = createSlice({
   },
 });
 
+export type { CartProductObjType };
 export const { addProduct } = cartSlice.actions;
 // reducer 함수 수행하기 위해..
 export default cartSlice.reducer;

@@ -53,7 +53,7 @@ const Pay = () => {
           description={`your total is $${price / 100}`}
           amount={price}
           token={onToken}
-          stripeKey='pk_test_51LHLA7KDRarv62Gzb5RdKPWxdt9ZTLyMbsO82WK3R4nkbHpA1ZbliD6oxuCCRf0BPLd5xFSmFd5kk8FnFMhxpznO00xujpH1o1'
+          stripeKey={process.env.REACT_APP_STRIPE}
         >
           <button
             style={{

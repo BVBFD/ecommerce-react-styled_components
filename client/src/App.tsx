@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, Routes, Route, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Cart from './pages/Cart';
 import Home from './pages/Home';
@@ -10,6 +10,7 @@ import Register from './pages/Register';
 
 const App = () => {
   const user = true;
+
   return (
     <BrowserRouter>
       <Routes>
