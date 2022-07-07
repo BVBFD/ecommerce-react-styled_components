@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Add, Remove } from '@mui/icons-material';
+import { Add, ClearOutlined, ClosedCaption, Remove } from '@mui/icons-material';
 import styled from 'styled-components';
 import Announcement from '../components/Announcement';
 import Footer from '../components/Footer';
@@ -7,10 +7,12 @@ import Navbar from '../components/Navbar';
 import { mobile } from '../responsive';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-import { CartProductObjType } from '../redux/cartRedux';
+import { CartProductObjType, removeProduct } from '../redux/cartRedux';
 import StripeCheckout, { Token } from 'react-stripe-checkout';
 import { userRequest } from '../requestMethods';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import CartProducts from '../components/CartProducts';
 
 type SummaryItemProps = {
   type?: string;
@@ -67,11 +69,13 @@ const Bottom = styled.div`
 
 const Info = styled.div`
   flex: 3;
+  margin-right: 2rem;
 `;
 
 const Product = styled.div`
   display: flex;
   justify-content: space-between;
+  position: relative;
   ${mobile({ flexDirection: 'column' })}
 `;
 
@@ -169,14 +173,30 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const CancelBox = styled.div`
+  background-color: #eeeeee;
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Cart = () => {
   const cart = useSelector((state: RootState) => state.cart);
   const [stripeToken, setStripeToken] = useState<Token>();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const KEY = process.env.REACT_APP_STRIPE;
 
   const onToken = (token: Token) => {
     setStripeToken(token);
+  };
+
+  const handleRemoveProduct = (e: any) => {
+    // dispatch(removeProduct());
+    console.log(e.target);
   };
 
   useEffect(() => {
@@ -212,36 +232,8 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            {cart.products.map((product: CartProductObjType) => (
-              <Product>
-                <ProductDetail>
-                  <Image src={product.img} />
-                  <Details>
-                    <ProductName>
-                      <b>Product:</b> {product.title}
-                    </ProductName>
-                    <ProductId>
-                      <b>ID:</b> {product._id}
-                    </ProductId>
-                    <ProductColor color={product.color[0]} />
-                    <ProductSize>
-                      <b>Size:</b> {product.size}
-                    </ProductSize>
-                  </Details>
-                </ProductDetail>
-                <PriceDetail>
-                  <ProductAmountContainer>
-                    <Add />
-                    <ProductAmount>{product.quantity}</ProductAmount>
-                    <Remove />
-                  </ProductAmountContainer>
-                  <ProductPrice>
-                    $ {product.price * product.quantity}
-                  </ProductPrice>
-                </PriceDetail>
-                <Hr />
-              </Product>
-            ))}
+            {/* @ts-ignore */}
+            <CartProducts products={cart.products} />
           </Info>
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>

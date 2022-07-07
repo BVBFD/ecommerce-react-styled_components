@@ -1,11 +1,13 @@
 import { Search, ShoppingCartOutlined } from '@mui/icons-material';
 import { Badge } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { mobile } from '../responsive';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logOut } from '../redux/userRedux';
 
 const Container = styled.div`
   height: 60px;
@@ -72,6 +74,13 @@ const MenuItem = styled.div`
 
 const Navbar = () => {
   const quantity = useSelector((state: RootState) => state.cart.quantity);
+  const user = useSelector((state: RootState) => state.user.currentUser);
+  const dispatch = useDispatch();
+
+  const handleLogOut = () => {
+    dispatch(logOut());
+  };
+
   return (
     <Container>
       <Wrapper>
@@ -86,8 +95,16 @@ const Navbar = () => {
           <Logo>Leo</Logo>
         </Center>
         <Right>
-          <MenuItem>REGISTER</MenuItem>
-          <MenuItem>SIGN IN</MenuItem>
+          <Link to={'/register'}>
+            <MenuItem>REGISTER</MenuItem>
+          </Link>
+          {user ? (
+            <MenuItem onClick={handleLogOut}>LOG OUT</MenuItem>
+          ) : (
+            <Link to={'/login'}>
+              <MenuItem>SIGN IN</MenuItem>
+            </Link>
+          )}
           <MenuItem>
             <Link to={'/cart'}>
               <Badge badgeContent={quantity} color='primary'>

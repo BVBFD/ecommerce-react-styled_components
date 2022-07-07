@@ -27,11 +27,17 @@ const userSlice = createSlice({
       state.isFetching = false;
       state.error = true;
     },
+    logOut: (state) => {
+      state.currentUser = null;
+      state.isFetching = false;
+      state.error = false;
+    },
   },
 });
 
 export type { UserState };
-export const { loginStart, loginSuccess, loginFailure } = userSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, logOut } =
+  userSlice.actions;
 // reducer 함수 수행하기 위해..
 export default userSlice.reducer;
 // reducer, state 상태 정보를 보관하는 store 객체를 만들기 위해..

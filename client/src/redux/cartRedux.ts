@@ -37,11 +37,18 @@ const cartSlice = createSlice({
       state.products.push(action.payload);
       state.total += action.payload.price * action.payload.quantity;
     },
+    removeProduct: (state, action) => {
+      state.quantity -= action.payload.quantity;
+      state.products = state.products.filter(
+        (product) => product._id !== action.payload.product._id
+      );
+      state.total -= action.payload.product.price * action.payload.quantity;
+    },
   },
 });
 
 export type { CartProductObjType };
-export const { addProduct } = cartSlice.actions;
+export const { addProduct, removeProduct } = cartSlice.actions;
 // reducer 함수 수행하기 위해..
 export default cartSlice.reducer;
 // reducer, state 상태 정보를 보관하는 store 객체를 만들기 위해..
