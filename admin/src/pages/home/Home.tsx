@@ -5,11 +5,13 @@ import Chart from '../../components/chart/Chart';
 import { userData } from '../../dummyData';
 import WidgetSm from '../../components/widgetSm/WidgetSm';
 import WidgetLg from '../../components/widgetLg/WidgetLg';
+import { Link } from 'react-router-dom';
 
 type UserDataType = [
   {
     name: string;
-    'Active User': number;
+    'Active User'?: number;
+    Sales?: number;
   }
 ];
 

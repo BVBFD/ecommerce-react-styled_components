@@ -15,7 +15,7 @@ import { UserDataType } from '../../pages/home/Home';
 type DataType = {
   data: UserDataType;
   title: string;
-  grid: boolean;
+  grid?: boolean;
   dataKey: string;
 };
 
