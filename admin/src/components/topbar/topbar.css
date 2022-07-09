@@ -27,6 +27,10 @@
   align-items: center;
 }
 
+.topRight button:active {
+  transform: scale(0.8);
+}
+
 .topbarIconContainer {
   position: relative;
   cursor: pointer;

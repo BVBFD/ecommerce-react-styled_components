@@ -4,6 +4,7 @@ import {
   loginStart,
   loginSuccess,
   ProductType,
+  logout,
   UserType,
 } from './userRedux';
 import { publicRequest, userRequest } from '../requestMethods';
@@ -22,7 +23,12 @@ import {
   addProductSuccess,
 } from './productRedux';
 
-export const login = async (dispatch: Dispatch, user: UserType) => {
+type LoginTryType = {
+  username: string;
+  password: string;
+};
+
+export const login = async (dispatch: Dispatch, user: LoginTryType) => {
   dispatch(loginStart());
   try {
     const res = await publicRequest.post('/auth/login', user);
@@ -30,6 +36,10 @@ export const login = async (dispatch: Dispatch, user: UserType) => {
   } catch (error) {
     dispatch(loginFailure());
   }
+};
+
+export const logoutImpl = (dispatch: Dispatch) => {
+  dispatch(logout());
 };
 
 export const getProducts = async (dispatch: Dispatch) => {

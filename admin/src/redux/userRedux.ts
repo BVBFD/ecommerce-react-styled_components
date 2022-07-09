@@ -2,14 +2,13 @@ import { createSlice } from '@reduxjs/toolkit';
 
 type UserType = {
   _id: string;
-  userId: string;
+  username: string;
   password?: string;
   email: string;
-  profilePic?: string;
+  isAdmin: boolean;
   createdAt?: number;
   updatedAt?: number;
   _v?: Int32List;
-  editable: boolean;
 };
 
 type ProductType = {

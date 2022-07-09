@@ -10,9 +10,15 @@ import NewUser from './pages/newUser/NewUser';
 import ProductList from './pages/productList/ProductList';
 import Product from './pages/product/Product';
 import NewProduct from './pages/newProduct/newProduct';
+import Login from './pages/login/Login';
+import { useSelector } from 'react-redux';
+import { RootState } from './redux/store';
 
 const App = () => {
-  console.log(process.env.REACT_APP_ADMIN);
+  const user = useSelector((state: RootState) => state.user.currentUser);
+  const admin = useSelector(
+    (state: RootState) => state.user.currentUser?.isAdmin
+  );
 
   return (
     <Router>
@@ -20,13 +26,26 @@ const App = () => {
       <div className='container'>
         <Sidebar />
         <Routes>
-          <Route path={'/'} element={<Home />} />
-          <Route path={'/users'} element={<UserList />} />
-          <Route path={'/user/:userId'} element={<User />} />
-          <Route path={'/newUser'} element={<NewUser />} />
-          <Route path={'/products'} element={<ProductList />} />
-          <Route path={'/product/:productId'} element={<Product />} />
-          <Route path={'/newProduct'} element={<NewProduct />} />
+          <Route path={'/login'} element={!user ? <Login /> : <Home />} />
+          <Route path={'/'} element={admin ? <Home /> : <Login />} />
+          <Route path={'/users'} element={admin ? <UserList /> : <Login />} />
+          <Route
+            path={'/user/:userId'}
+            element={admin ? <User /> : <Login />}
+          />
+          <Route path={'/newUser'} element={admin ? <NewUser /> : <Login />} />
+          <Route
+            path={'/products'}
+            element={admin ? <ProductList /> : <Login />}
+          />
+          <Route
+            path={'/product/:productId'}
+            element={admin ? <Product /> : <Login />}
+          />
+          <Route
+            path={'/newProduct'}
+            element={admin ? <NewProduct /> : <Login />}
+          />
         </Routes>
       </div>
     </Router>
