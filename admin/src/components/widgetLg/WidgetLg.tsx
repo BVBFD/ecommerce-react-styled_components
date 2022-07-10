@@ -1,13 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './widgetLg.css';
+import { UserType } from '../../redux/userRedux';
+import { userRequest } from '../../requestMethods';
+import { format } from 'timeago.js';
 
 type ButtonType = {
-  type?: string;
+  type?: 'approved' | 'declined' | 'pending';
+};
+
+type OrderType = {
+  userId: string;
+  products: Array<{ productId: string; quantity: number }>;
+  amount: number;
+  address: object;
+  status: ButtonType['type'];
+  _id: string;
+  _v?: Int32List;
+  createdAt?: number;
+  updatedAt?: number;
 };
 
 const WidgetLg = () => {
+  const [orders, setOrders] = useState<OrderType[]>();
+
+  useEffect(() => {
+    const getOrders = async () => {
+      try {
+        const res = await userRequest.get('/orders');
+        setOrders(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getOrders();
+  }, []);
+
   const Button = ({ type }: ButtonType) => {
-    return <button className={'widgetLgButton'}>Connected</button>;
+    return <button className={`widgetLgButton ${type}`}>{type}</button>;
   };
   return (
     <div className='widgetLg'>
@@ -23,18 +52,22 @@ const WidgetLg = () => {
           <th className='widgetLgTh'>Status</th>
         </tr>
 
-        <tr className='widgetLgTr'>
-          {/* thread of table */}
-          <td className='widgetLgUser'>
-            {/* thread detail */}
-            <span className='widgetLgName'>lsevina126</span>
-          </td>
-          <td className='widgetLgDate'>2 Jun 2021</td>
-          <td className='widgetLgAmount'>$200</td>
-          <td className='widgetLgStatus'>
-            <Button type='Declined' />
-          </td>
-        </tr>
+        {orders?.map((order) => (
+          <tr className='widgetLgTr' key={order._id}>
+            {/* thread of table */}
+            <td className='widgetLgUser'>
+              {/* thread detail */}
+              <span className='widgetLgName'>{order.userId}</span>
+            </td>
+            <td className='widgetLgDate'>
+              {format(order.createdAt as number)}
+            </td>
+            <td className='widgetLgAmount'>${order.amount}</td>
+            <td className='widgetLgStatus'>
+              <Button type={order.status} />
+            </td>
+          </tr>
+        ))}
       </table>
     </div>
   );

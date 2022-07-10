@@ -13,6 +13,19 @@ import { userRequest } from '../requestMethods';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import CartProducts from '../components/CartProducts';
+import { UserState } from '../redux/userRedux';
+
+type UserType = {
+  _id: string;
+  username: string;
+  email: string;
+  password?: string;
+  isAdmin: boolean;
+  createdAt?: number;
+  updatedAt?: number;
+  _v?: number;
+  accessToken?: string;
+};
 
 type SummaryItemProps = {
   type?: string;
@@ -183,9 +196,18 @@ const CancelBox = styled.div`
   align-items: center;
 `;
 
+type CartProductsType = {
+  productId: string;
+  quantity: number;
+};
+
 const Cart = () => {
+  const user = useSelector(
+    (state: RootState) => state.user.currentUser as UserType
+  );
   const cart = useSelector((state: RootState) => state.cart);
   const [stripeToken, setStripeToken] = useState<Token>();
+  const [products, setProducts] = useState<CartProductsType[]>([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const KEY = process.env.REACT_APP_STRIPE;
@@ -194,10 +216,23 @@ const Cart = () => {
     setStripeToken(token);
   };
 
-  const handleRemoveProduct = (e: any) => {
-    // dispatch(removeProduct());
-    console.log(e.target);
-  };
+  useEffect(() => {
+    let newArray: CartProductsType[] = [];
+    cart.products.forEach((product) => {
+      let buyProductObj = {};
+      buyProductObj = {
+        productId: product._id,
+        quantity: product.quantity,
+      };
+      newArray.push(buyProductObj as CartProductsType);
+    });
+
+    setProducts(newArray);
+  }, [cart.products]);
+
+  console.log(cart);
+  console.log(user);
+  console.log(products);
 
   useEffect(() => {
     const makeRequest = async () => {
@@ -205,6 +240,14 @@ const Cart = () => {
         const res = await userRequest.post('/checkout/payment', {
           tokenId: stripeToken?.id,
           amount: cart.total * 100,
+        });
+
+        await userRequest.post('/orders', {
+          userId: user._id,
+          products,
+          amount: cart.total,
+          address: 'USA',
+          status: 'approved',
         });
 
         navigate('/success', { state: { data: res.data } });

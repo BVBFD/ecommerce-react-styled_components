@@ -6,6 +6,7 @@ type UserType = {
   password?: string;
   email: string;
   isAdmin: boolean;
+  img?: string;
   createdAt?: number;
   updatedAt?: number;
   _v?: Int32List;

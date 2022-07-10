@@ -24,8 +24,8 @@ router.post(
       // savedUser가 없는 상태에서 json을 보내게 되어 오류 발생
       // 그래서 async, await를 붙임!!
     } catch (error) {
-      console.error(error);
-      //   res.status(500).json(error);
+      // console.error(error);
+      res.status(500).json(error);
     }
   }
 );
@@ -63,8 +63,8 @@ router.post(
       const { password, ...others } = user!._doc;
       res.status(200).json({ ...others, accessToken });
     } catch (error) {
-      console.error(error);
-      //   res.status(500).json(error);
+      // console.error(error);
+      res.status(500).json(error);
     }
   }
 );

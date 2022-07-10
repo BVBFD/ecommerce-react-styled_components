@@ -13,7 +13,7 @@ import {
 import { UserDataType } from '../../pages/home/Home';
 
 type DataType = {
-  data: UserDataType;
+  data: UserDataType[];
   title: string;
   grid?: boolean;
   dataKey: string;
@@ -30,7 +30,7 @@ const Chart = ({ data, title, grid, dataKey }: DataType) => {
           <YAxis stroke='#5550bd' />
           <Line type='monotone' dataKey={dataKey} stroke='#5550bd' />
           <Tooltip />
-          <Legend />
+          {/* <Legend /> */}
         </LineChart>
       </ResponsiveContainer>
     </div>
