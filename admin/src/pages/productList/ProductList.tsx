@@ -1,19 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './productList.css';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { DeleteOutline } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { productRows } from '../../dummyData';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteProduct, getProducts } from '../../redux/apiCalls';
+import { RootState } from '../../redux/store';
 
 const ProductList = () => {
   const [data, setData] = useState(productRows);
+  const dispatch = useDispatch();
+  const products = useSelector((state: RootState) => state.product.products);
 
-  const handleDelete = (id: number) => {
-    setData(data.filter((item) => item.id !== id));
+  useEffect(() => {
+    getProducts(dispatch);
+  }, [dispatch]);
+
+  const handleDelete = (id: string) => {
+    deleteProduct(id, dispatch);
   };
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 220 },
+    { field: '_id', headerName: 'ID', width: 220 },
     {
       field: 'name',
       headerName: 'Product',
@@ -27,7 +36,7 @@ const ProductList = () => {
         );
       },
     },
-    { field: 'stock', headerName: 'Stock', width: 200 },
+    { field: 'inStock', headerName: 'Stock', width: 200 },
     {
       field: 'price',
       headerName: 'Price',
@@ -40,12 +49,12 @@ const ProductList = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={'/product/' + params.row.id}>
+            <Link to={'/product/' + params.row._id}>
               <button className='productListEdit'>Edit</button>
             </Link>
             <DeleteOutline
               className='productListDelete'
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleDelete(params.row._id)}
             />
           </>
         );
@@ -56,10 +65,10 @@ const ProductList = () => {
   return (
     <div className='productList'>
       <DataGrid
-        rows={data}
+        rows={products}
         disableSelectionOnClick
         columns={columns}
-        getRowId={(row) => row.id}
+        getRowId={(row) => row._id}
         pageSize={8}
         checkboxSelection
       />
