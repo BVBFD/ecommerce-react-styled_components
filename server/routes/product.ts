@@ -66,6 +66,7 @@ router.get(
       const product = await Product.findById(req.params.id);
       res.status(200).json(product);
     } catch (error) {
+      // console.log(error);
       res.status(500).json(error);
     }
   }
@@ -92,6 +93,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
     res.status(200).json(products);
   } catch (error) {
+    // console.log(error);
     res.status(500).json(error);
   }
 });

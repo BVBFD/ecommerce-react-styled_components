@@ -11,9 +11,10 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { UserDataType } from '../../pages/home/Home';
+import { ProductType } from '../../redux/userRedux';
 
 type DataType = {
-  data: UserDataType[];
+  data: UserDataType[] | ProductType | undefined | any;
   title: string;
   grid?: boolean;
   dataKey: string;
