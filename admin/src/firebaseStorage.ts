@@ -5,8 +5,6 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from 'firebase/storage';
-import { ProductType } from './redux/productRedux';
-import { UserType } from './redux/userRedux';
 
 class ImgStorage {
   private storage;
