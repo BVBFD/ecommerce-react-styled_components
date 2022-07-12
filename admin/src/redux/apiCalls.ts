@@ -7,6 +7,7 @@ import {
   logout,
   UserType,
 } from './userRedux';
+import * as ProductInfoType from './productRedux';
 import { publicRequest, userRequest } from '../requestMethods';
 import {
   getProductFailure,
@@ -22,6 +23,8 @@ import {
   addProductStart,
   addProductSuccess,
 } from './productRedux';
+
+type ProductType2 = ProductInfoType.ProductType;
 
 type LoginTryType = {
   username: string;
@@ -64,12 +67,14 @@ export const deleteProduct = async (id: string, dispatch: Dispatch) => {
 
 export const updateProduct = async (
   id: string,
-  product: ProductType,
+  product: ProductType | ProductType2,
   dispatch: Dispatch
 ) => {
   dispatch(updateProductStart());
   try {
-    dispatch(updateProductSuccess({ id, product }));
+    const res = await userRequest.put(`/products/${id}`, product);
+    dispatch(updateProductSuccess(res.data));
+    return res.data;
   } catch (error) {
     dispatch(updateProductFailure);
   }
@@ -80,6 +85,7 @@ export const addProduct = async (product: ProductType, dispatch: Dispatch) => {
   try {
     const res = await userRequest.post(`/products`, product);
     dispatch(addProductSuccess(res.data));
+    return res.data;
   } catch (error) {
     dispatch(addProductFailure());
   }

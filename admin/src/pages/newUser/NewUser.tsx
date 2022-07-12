@@ -1,36 +1,80 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { UserType } from '../../redux/userRedux';
+import { publicRequest } from '../../requestMethods';
 import './newUser.css';
 
 const NewUser = () => {
+  const [user, setUser] = useState<UserType | {}>({ isAdmin: false });
+  const navigate = useNavigate();
+
+  const handleNewUser = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    if (e.target.name === 'isAdmin') {
+      if (e.target.value === 'false') {
+        setUser({
+          ...user,
+          [e.target.name]: false,
+        });
+      } else {
+        setUser({
+          ...user,
+          [e.target.name]: true,
+        });
+      }
+    } else {
+      setUser({
+        ...user,
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
+
+  const createNewUser = async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    try {
+      const res = await publicRequest.post('/auth/register', user);
+      console.log(res);
+      navigate(`/user/${res.data._id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(user);
+
   return (
     <div className='newUser'>
       <h1 className='newUserTitle'>New User</h1>
       <form className='newUserForm'>
         <div className='newUserItem'>
           <label>Username</label>
-          <input type='text' placeholder='john' />
-        </div>
-        <div className='newUserItem'>
-          <label>Full Name</label>
-          <input type='text' placeholder='John Smith' />
+          <input
+            onChange={handleNewUser}
+            name='username'
+            type='text'
+            placeholder='john'
+          />
         </div>
         <div className='newUserItem'>
           <label>Email</label>
-          <input type='email' placeholder='john@gmail.com' />
+          <input
+            onChange={handleNewUser}
+            name='email'
+            type='email'
+            placeholder='john@gmail.com'
+          />
         </div>
         <div className='newUserItem'>
           <label>Password</label>
-          <input type='password' placeholder='password' />
+          <input
+            onChange={handleNewUser}
+            name='password'
+            type='password'
+            placeholder='password'
+          />
         </div>
-        <div className='newUserItem'>
-          <label>Phone</label>
-          <input type='text' placeholder='+1 123 456 78' />
-        </div>
-        <div className='newUserItem'>
-          <label>Address</label>
-          <input type='text' placeholder='New York | USA' />
-        </div>
-        <div className='newUserItem'>
+        {/* <div className='newUserItem'>
           <label>Gender</label>
           <div className='newUserGender'>
             <input type='radio' name='gender' id='male' value='male' />
@@ -40,15 +84,21 @@ const NewUser = () => {
             <input type='radio' name='gender' id='other' value='other' />
             <label htmlFor='other'>Other</label>
           </div>
-        </div>
+        </div> */}
         <div className='newUserItem'>
-          <label>Active</label>
-          <select className='newUserSelect' name='active' id='active'>
-            <option value='yes'>Yes</option>
-            <option value='no'>No</option>
+          <label>Admin</label>
+          <select
+            onChange={handleNewUser}
+            className='newUserSelect'
+            name='isAdmin'
+          >
+            <option value='false'>No</option>
+            <option value='true'>Yes</option>
           </select>
         </div>
-        <button className='newUserButton'>Create</button>
+        <button onClick={createNewUser} className='newUserButton'>
+          Create
+        </button>
       </form>
     </div>
   );

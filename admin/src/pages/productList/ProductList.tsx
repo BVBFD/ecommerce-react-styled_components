@@ -72,6 +72,9 @@ const ProductList = () => {
         pageSize={8}
         checkboxSelection
       />
+      <Link to='/newProduct'>
+        <button className='uploadProduct'>Upload New Product</button>
+      </Link>
     </div>
   );
 };

@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
 import './newProduct.css';
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from 'firebase/storage';
 import FirebaseApp from '../../firebase';
 import { addProduct } from '../../redux/apiCalls';
 import { useDispatch } from 'react-redux';
+import ImgStorage from '../../firebaseStorage';
+import { useNavigate } from 'react-router-dom';
 
 const NewProduct = () => {
   const [inputs, setInputs] = useState({ inStock: true });
-  const [file, setFile] = useState<File>();
+  // const [file, setFile] = useState<File>();
+  const [downloadURL, setDownloadURL] = useState<string>();
   const [cat, setCat] = useState<string[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const imgStorage = new ImgStorage(FirebaseApp);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -41,62 +40,29 @@ const NewProduct = () => {
     setCat(e.target.value.split(','));
   };
 
-  const handleClick = (e: React.FormEvent<HTMLButtonElement>) => {
+  const handleClick = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsFetching(true);
 
-    if (!file) {
+    if (!downloadURL) {
       return;
     }
 
-    const fileName = new Date().getTime() + file!.name;
-    const storage = getStorage(FirebaseApp);
-    const storageRef = ref(storage, fileName);
+    const product = {
+      ...inputs,
+      img: downloadURL,
+      categories: cat,
+    };
 
-    const uploadTask = uploadBytesResumable(storageRef, file!);
+    try {
+      // @ts-ignore
+      const result = await addProduct(product, dispatch);
+      navigate(`/product/${result._id}`);
+    } catch (error) {
+      console.log(error);
+    }
 
-    // Register three observers:
-    // 1. 'state_changed' observer, called any time the state changes
-    // 2. Error observer, called on failure
-    // 3. Completion observer, called on successful completion
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        // Observe state change events such as progress, pause, and resume
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
-        switch (snapshot.state) {
-          case 'paused':
-            console.log('Upload is paused');
-            break;
-          case 'running':
-            console.log('Upload is running');
-            break;
-        }
-      },
-      (error) => {
-        // Handle unsuccessful uploads
-        window.alert(error);
-      },
-      () => {
-        // Handle successful uploads on complete
-        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
-          const product = {
-            ...inputs,
-            img: downloadURL,
-            categories: cat,
-          };
-          console.log(product);
-          // @ts-ignore
-          addProduct(product, dispatch);
-          setIsFetching(false);
-        });
-      }
-    );
+    setIsFetching(false);
   };
 
   return (
@@ -106,11 +72,11 @@ const NewProduct = () => {
         <div className='addProductItem'>
           <label>Image</label>
           <input
-            onChange={(e) => {
+            onChange={async (e) => {
               if (e.target.files == null) {
                 return;
               }
-              return setFile(e.target.files[0]);
+              await imgStorage.uploadImg(e.target.files[0], setDownloadURL);
             }}
             type='file'
             id='file'

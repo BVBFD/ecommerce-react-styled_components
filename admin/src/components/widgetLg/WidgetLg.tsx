@@ -27,7 +27,7 @@ const WidgetLg = () => {
     const getOrders = async () => {
       try {
         const res = await userRequest.get('/orders');
-        setOrders(res.data);
+        setOrders(res.data.reverse());
       } catch (error) {
         console.log(error);
       }

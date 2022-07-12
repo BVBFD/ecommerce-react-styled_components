@@ -2,34 +2,42 @@ import React, { useEffect, useState } from 'react';
 import './userList.css';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { DeleteOutline } from '@mui/icons-material';
-import { userRows } from '../../dummyData';
 import { Link } from 'react-router-dom';
+import { userRequest } from '../../requestMethods';
+import { UserType } from '../../redux/userRedux';
 
 const UserList = () => {
-  const [data, setData] = useState(userRows);
+  const [data, setData] = useState<UserType[]>([]);
 
-  const handleDelete = (id: number) => {
-    setData(data.filter((item) => item.id !== id));
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const res = await userRequest.get('/users');
+        setData(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUsers();
+  }, []);
+
+  const handleDelete = (id: string) => {
+    setData(data.filter((item) => item._id !== id));
   };
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 70 },
+    { field: '_id', headerName: 'ID', width: 200 },
     {
-      field: 'user',
+      field: 'username',
       headerName: 'User',
-      width: 130,
+      width: 120,
       renderCell: (params) => {
-        return (
-          <div className='userListUser'>
-            <img className='userListImg' src={params.row.avatar} alt='' />
-            {params.row.username}
-          </div>
-        );
+        return <div className='userListUser'>{params.row.username}</div>;
       },
     },
     {
-      field: 'avatar',
-      headerName: 'Avatar',
+      field: 'createdAt',
+      headerName: 'Resitered',
       width: 200,
     },
     {
@@ -38,13 +46,8 @@ const UserList = () => {
       width: 200,
     },
     {
-      field: 'status',
-      headerName: 'Status',
-      width: 90,
-    },
-    {
-      field: 'transaction',
-      headerName: 'Transaction',
+      field: 'isAdmin',
+      headerName: 'Admin',
       width: 90,
     },
     {
@@ -52,16 +55,14 @@ const UserList = () => {
       headerName: 'Action',
       width: 150,
       renderCell: (params) => {
-        console.log(params);
-
         return (
           <>
-            <Link to={`/user/${params.row.id}`}>
+            <Link to={`/user/${params.row._id}`}>
               <button className='userListEdit'>Edit</button>
             </Link>
             <DeleteOutline
               className='userListDelete'
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleDelete(params.row._id)}
             />
           </>
         );
@@ -75,9 +76,13 @@ const UserList = () => {
         rows={data}
         disableSelectionOnClick
         columns={columns}
+        getRowId={(row) => row._id}
         pageSize={8}
         checkboxSelection
       />
+      <Link to='/newUser'>
+        <button className='uploadUser'>Upload New User</button>
+      </Link>
     </div>
   );
 };

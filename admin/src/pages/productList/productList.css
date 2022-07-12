@@ -1,5 +1,6 @@
 .productList {
   flex: 4;
+  position: relative;
 }
 
 .productListItem {
@@ -28,4 +29,23 @@
 .productListDelete {
   color: red;
   cursor: pointer;
+}
+
+.uploadProduct {
+  background-color: darkblue;
+  color: white;
+  padding: 12px 10px;
+  font-size: 18px;
+  position: absolute;
+  left: 2px;
+  bottom: 0;
+  cursor: pointer;
+}
+
+.uploadProduct:hover {
+  background-color: darkred;
+}
+
+.uploadProduct:active {
+  transform: scale(0.95);
 }

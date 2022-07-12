@@ -2,10 +2,16 @@ import React, { useEffect, useMemo, useState } from 'react';
 import './product.css';
 import { Publish } from '@mui/icons-material';
 import Chart from '../../components/chart/Chart';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { userRequest } from '../../requestMethods';
+import { ProductType } from '../../redux/productRedux';
+import ImgStorage from '../../firebaseStorage';
+import FirebaseApp from '../../firebase';
+import { updateProduct } from '../../redux/apiCalls';
+import { useDispatch } from 'react-redux';
+import { async } from '@firebase/util';
 
 type ResProductType = {
   _id: number;
@@ -23,9 +29,16 @@ const Product = () => {
   const [pStats, setPStats] = useState<PStatsType[]>([]);
   const [totalSales, setTotalSales] = useState<number>(0);
 
+  const [update, setUpdate] = useState<ProductType>({ inStock: false });
+  const [downloadURL, setDownloadURL] = useState<string>();
   const product = useSelector((state: RootState) =>
     state.product.products.find((product) => product._id === productId)
   );
+
+  const imgStorage = new ImgStorage(FirebaseApp);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const MONTHS = useMemo(
     () => [
@@ -77,6 +90,60 @@ const Product = () => {
     setTotalSales(totalSales);
   }, [pStats]);
 
+  const handleUpdateProduct = async (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    e.preventDefault();
+    if (e.target.name === 'inStock') {
+      if (e.target.value === 'true') {
+        setUpdate({
+          ...update,
+          [e.target.name]: true,
+        });
+      } else {
+        setUpdate({
+          ...update,
+          [e.target.name]: false,
+        });
+      }
+    } else {
+      setUpdate({
+        ...update,
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
+
+  const handleImgUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      const target = e.target;
+      if (target.files == null) {
+        return;
+      }
+      const file = target.files[0];
+      await imgStorage.uploadImg(file, setDownloadURL);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    setUpdate({ ...update, img: downloadURL });
+  }, [downloadURL]);
+
+  const handleUpdate = async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsUpdating(true);
+    try {
+      const result = await updateProduct(productId, update, dispatch);
+      navigate(`/product/${result._id}`);
+      window.alert('Update Finished!!');
+    } catch (error) {
+      console.log(error);
+    }
+    setIsUpdating(false);
+  };
+
   return (
     <div className='product'>
       <div className='productTitleContainer'>
@@ -95,7 +162,11 @@ const Product = () => {
         </div>
         <div className='productTopRight'>
           <div className='productInfoTop'>
-            <img src={product?.img} alt='' className='productInfoImg' />
+            <img
+              src={!downloadURL ? product?.img : downloadURL}
+              alt=''
+              className='productInfoImg'
+            />
             <span className='productName'>{product?.title}</span>
           </div>
           <div className='productInfoBottom'>
@@ -120,26 +191,58 @@ const Product = () => {
         <form className='productForm'>
           <div className='productFormLeft'>
             <label>Product Name</label>
-            <input type='text' placeholder={product?.title} />
+            <input
+              onChange={handleUpdateProduct}
+              name='title'
+              type='text'
+              placeholder={product?.title}
+            />
             <label>Product Description</label>
-            <input type='text' placeholder={product?.desc} />
+            <input
+              onChange={handleUpdateProduct}
+              name='desc'
+              type='text'
+              placeholder={product?.desc}
+            />
             <label>Price</label>
-            <input type='text' defaultValue={product?.price} />
+            <input
+              onChange={handleUpdateProduct}
+              name='price'
+              type='text'
+              defaultValue={product?.price}
+            />
             <label>In Stock</label>
-            <select name='inStock' id='idStock'>
-              <option value='true'>Yes</option>
+            <select onChange={handleUpdateProduct} name='inStock' id='idStock'>
               <option value='false'>No</option>
+              <option value='true'>Yes</option>
             </select>
           </div>
           <div className='productFormRight'>
             <div className='productUpload'>
-              <img src={product?.img} alt='' className='productUploadImg' />
-              <label htmlFor='file'>
+              <img
+                src={!downloadURL ? product?.img : downloadURL}
+                alt=''
+                className='productUploadImg'
+              />
+              <label htmlFor='file' style={{ cursor: 'pointer' }}>
                 <Publish />
               </label>
-              <input type='file' id='file' style={{ display: 'none' }} />
+              <input
+                disabled={isUpdating}
+                name='img'
+                onChange={handleImgUpload}
+                type='file'
+                id='file'
+                style={{ display: 'none', cursor: 'pointer' }}
+              />
             </div>
-            <button className='productButton'>Update</button>
+            <button
+              disabled={isUpdating}
+              onClick={handleUpdate}
+              className='productButton'
+            >
+              {isUpdating ? 'Updating...' : 'Update'}
+            </button>
           </div>
         </form>
       </div>

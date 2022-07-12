@@ -93,6 +93,7 @@ export const productSlice = createSlice({
   },
 });
 
+export { type ProductType };
 export const {
   getProductStart,
   getProductSuccess,
