@@ -5,6 +5,8 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from 'firebase/storage';
+import { ProductType } from './redux/productRedux';
+import { UserType } from './redux/userRedux';
 
 class ImgStorage {
   private storage;
@@ -13,7 +15,10 @@ class ImgStorage {
     this.storage = getStorage(firebaseApp);
   }
 
-  async uploadImg(file: File, cb: any) {
+  async uploadImg(
+    file: File,
+    cb: React.Dispatch<React.SetStateAction<string | undefined>>
+  ) {
     const fileName = new Date().getTime() + file!.name;
     const storageRef = ref(this.storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file!);
