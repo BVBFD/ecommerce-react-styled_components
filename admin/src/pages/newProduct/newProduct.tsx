@@ -1,19 +1,21 @@
-import React, { ReactEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import './newProduct.css';
-
-type SizeType = 'XS' | 'S' | 'M' | 'L' | 'XL' | '';
-type CatType = ['women' | 'man', string];
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from 'firebase/storage';
+import FirebaseApp from '../../firebase';
+import { addProduct } from '../../redux/apiCalls';
+import { useDispatch } from 'react-redux';
 
 const NewProduct = () => {
-  const [inputs, setInputs] = useState({});
+  const [inputs, setInputs] = useState({ inStock: true });
   const [file, setFile] = useState<File>();
-  const [title, setTitle] = useState<string>('');
-  const [desc, setDesc] = useState<string>('');
-  const [size, setSize] = useState<SizeType[]>([]);
-  const [color, setColor] = useState<string[]>([]);
-  const [price, setPrice] = useState<number>(0);
   const [cat, setCat] = useState<string[]>([]);
-  const [stock, setStock] = useState<boolean>();
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -27,6 +29,10 @@ const NewProduct = () => {
         return { ...prev, [e.target.name]: e.target.value.split(',') };
       }
 
+      if (e.target.name === 'price') {
+        return { ...prev, [e.target.name]: parseInt(e.target.value) };
+      }
+
       return { ...prev, [e.target.name]: e.target.value };
     });
   };
@@ -35,9 +41,63 @@ const NewProduct = () => {
     setCat(e.target.value.split(','));
   };
 
-  console.log(inputs);
-  console.log(file);
-  console.log(cat);
+  const handleClick = (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsFetching(true);
+
+    if (!file) {
+      return;
+    }
+
+    const fileName = new Date().getTime() + file!.name;
+    const storage = getStorage(FirebaseApp);
+    const storageRef = ref(storage, fileName);
+
+    const uploadTask = uploadBytesResumable(storageRef, file!);
+
+    // Register three observers:
+    // 1. 'state_changed' observer, called any time the state changes
+    // 2. Error observer, called on failure
+    // 3. Completion observer, called on successful completion
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        // Observe state change events such as progress, pause, and resume
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+        switch (snapshot.state) {
+          case 'paused':
+            console.log('Upload is paused');
+            break;
+          case 'running':
+            console.log('Upload is running');
+            break;
+        }
+      },
+      (error) => {
+        // Handle unsuccessful uploads
+        window.alert(error);
+      },
+      () => {
+        // Handle successful uploads on complete
+        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log('File available at', downloadURL);
+          const product = {
+            ...inputs,
+            img: downloadURL,
+            categories: cat,
+          };
+          console.log(product);
+          // @ts-ignore
+          addProduct(product, dispatch);
+          setIsFetching(false);
+        });
+      }
+    );
+  };
 
   return (
     <div className='newProduct'>
@@ -106,7 +166,7 @@ const NewProduct = () => {
           <input
             onChange={handleCat}
             type='text'
-            placeholder='women,man,shirt,dress...'
+            placeholder='women,man(Mandatory One),shirt...'
           />
         </div>
         <div className='addProductItem'>
@@ -116,7 +176,13 @@ const NewProduct = () => {
             <option value='false'>No</option>
           </select>
         </div>
-        <button className='addProductButton'>Create</button>
+        <button
+          onClick={handleClick}
+          className='addProductButton'
+          disabled={isFetching}
+        >
+          {isFetching ? 'Uploading...' : 'Create'}
+        </button>
       </form>
     </div>
   );

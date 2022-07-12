@@ -1,15 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+type SizeType = 'XS' | 'S' | 'M' | 'L' | 'XL';
+
 type ProductType = {
-  _id: string;
-  title: string;
-  desc: string;
-  img: string;
-  categories: Array<String>;
-  size: Array<String>;
-  color: Array<String>;
-  price: number;
-  inStock: boolean;
+  _id?: string;
+  title?: string;
+  desc?: string;
+  img?: string;
+  categories?: ['women' | 'man', string];
+  size?: SizeType[];
+  color?: string[];
+  price?: number;
+  inStock?: boolean;
   createdAt?: number;
   updatedAt?: number;
   _v?: Int32List;
