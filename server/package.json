@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "concurrently \"nodemon dist/app.js\" \"tsc -w\"",
+    "start": "concurrently \"nodemon  dist/app.js\" \"tsc -w\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -31,5 +31,9 @@
     "@types/nodemon": "^1.19.1",
     "concurrently": "^7.2.2",
     "nodemon": "^2.0.18"
+  },
+  "engines": {
+    "node": "16.14.0",
+    "npm": "8.3.1"
   }
 }

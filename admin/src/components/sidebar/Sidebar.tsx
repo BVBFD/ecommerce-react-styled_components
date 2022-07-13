@@ -34,14 +34,14 @@ const Sidebar = () => {
                   Home
                 </li>
               </Link>
-              <li className='sidebarListItem'>
+              {/* <li className='sidebarListItem'>
                 <Timeline className='sidebarIcon' />
                 Analytics
               </li>
               <li className='sidebarListItem'>
                 <TrendingUp className='sidebarIcon' />
                 Sales
-              </li>
+              </li> */}
             </ul>
           </div>
           <div className='sidebarMenu'>
@@ -59,17 +59,17 @@ const Sidebar = () => {
                   Products
                 </li>
               </Link>
-              <li className='sidebarListItem'>
+              {/* <li className='sidebarListItem'>
                 <AttachMoney className='sidebarIcon' />
                 Transactions
               </li>
               <li className='sidebarListItem'>
                 <BarChart className='sidebarIcon' />
                 Reports
-              </li>
+              </li> */}
             </ul>
           </div>
-          <div className='sidebarMenu'>
+          {/* <div className='sidebarMenu'>
             <h3 className='sidebarTitle'>Notifications</h3>
             <ul className='sidebarList'>
               <li className='sidebarListItem'>
@@ -102,7 +102,7 @@ const Sidebar = () => {
                 Reports
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </div>
     )

@@ -11,7 +11,7 @@ router.post(
       username: req.body.username,
       email: req.body.email,
       password: CryptoJS.AES.encrypt(
-        req.body.password,
+        req.body?.password,
         process.env.PASS_SEC
       ).toString(),
     });
@@ -24,8 +24,8 @@ router.post(
       // savedUser가 없는 상태에서 json을 보내게 되어 오류 발생
       // 그래서 async, await를 붙임!!
     } catch (error) {
-      // console.error(error);
-      res.status(500).json(error);
+      console.error(error);
+      // res.status(500).json(error);
     }
   }
 );
@@ -38,13 +38,17 @@ router.post(
 
       !user && res.status(401).json('Wrong credentials');
 
+      if (user?.password == null) {
+        res.status(500).json("can't read password");
+      }
+
       const hashedPassword = CryptoJS.AES.decrypt(
         user!.password,
         process.env.PASS_SEC
       );
 
       const originalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
-      const inputPassword = req.body.password;
+      const inputPassword = req.body?.password;
 
       originalPassword !== inputPassword &&
         res.status(401).json('Wrong credentials');
@@ -63,8 +67,8 @@ router.post(
       const { password, ...others } = user!._doc;
       res.status(200).json({ ...others, accessToken });
     } catch (error) {
-      // console.error(error);
-      res.status(500).json(error);
+      console.error(error);
+      // res.status(500).json(error);
     }
   }
 );

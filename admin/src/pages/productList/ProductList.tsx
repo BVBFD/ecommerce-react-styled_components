@@ -9,7 +9,6 @@ import { deleteProduct, getProducts } from '../../redux/apiCalls';
 import { RootState } from '../../redux/store';
 
 const ProductList = () => {
-  const [data, setData] = useState(productRows);
   const dispatch = useDispatch();
   const products = useSelector((state: RootState) => state.product.products);
 

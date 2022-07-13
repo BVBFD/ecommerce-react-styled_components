@@ -19,7 +19,8 @@ router.post(
       const savedProduct = await newProduct.save();
       res.status(200).json(savedProduct);
     } catch (error) {
-      res.status(500).json(error);
+      // res.status(500).json(error);
+      console.error(error);
     }
   }
 );
@@ -39,7 +40,8 @@ router.put(
       );
       res.status(200).json(updatedProduct);
     } catch (error) {
-      res.status(500).json(error);
+      // res.status(500).json(error);
+      console.error(error);
     }
   }
 );
@@ -53,7 +55,8 @@ router.delete(
       await Product.findByIdAndDelete(req.params.id);
       res.status(200).json('Product has been deleted...');
     } catch (error) {
-      res.status(500).json(error);
+      // res.status(500).json(error);
+      console.error(error);
     }
   }
 );
@@ -66,8 +69,8 @@ router.get(
       const product = await Product.findById(req.params.id);
       res.status(200).json(product);
     } catch (error) {
-      // console.log(error);
-      res.status(500).json(error);
+      // res.status(500).json(error);
+      console.error(error);
     }
   }
 );
@@ -93,8 +96,8 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
     res.status(200).json(products);
   } catch (error) {
-    // console.log(error);
-    res.status(500).json(error);
+    // res.status(500).json(error);
+    console.error(error);
   }
 });
 

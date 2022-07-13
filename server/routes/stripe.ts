@@ -24,7 +24,8 @@ router.post(
       );
       res.status(200).json(result);
     } catch (error) {
-      res.status(500).json(error);
+      // res.status(500).json(error);
+      console.error(error);
     }
   }
 );

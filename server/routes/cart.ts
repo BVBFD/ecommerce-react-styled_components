@@ -19,7 +19,8 @@ router.post(
       const savedCart = await newCart.save();
       res.status(200).json(savedCart);
     } catch (error) {
-      res.status(500).json(error);
+      // res.status(500).json(error);
+      console.error(error);
     }
   }
 );
@@ -37,7 +38,8 @@ router.put(
       );
       res.status(200).json(updatedCart);
     } catch (error) {
-      res.status(500).json(error);
+      // res.status(500).json(error);
+      console.error(error);
     }
   }
 );
@@ -51,7 +53,8 @@ router.delete(
       await Cart.findByIdAndDelete(req.params.id);
       res.status(200).json('Cart has been deleted...');
     } catch (error) {
-      res.status(500).json(error);
+      // res.status(500).json(error);
+      console.error(error);
     }
   }
 );
@@ -65,7 +68,8 @@ router.get(
       const cart = await Cart.findOne({ userId: req.params.userId });
       res.status(200).json(cart);
     } catch (error) {
-      res.status(500).json(error);
+      // res.status(500).json(error);
+      console.error(error);
     }
   }
 );
@@ -79,7 +83,8 @@ router.get(
       const carts = await Cart.find();
       res.status(200).json(carts);
     } catch (error) {
-      res.status(500).json(error);
+      // res.status(500).json(error);
+      console.error(error);
     }
   }
 );

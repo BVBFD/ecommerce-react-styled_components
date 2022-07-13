@@ -19,6 +19,7 @@ const App = () => {
   const admin = useSelector(
     (state: RootState) => state.user.currentUser?.isAdmin
   );
+  console.log(process.env.REACT_APP_ADMIN);
 
   return (
     <Router>

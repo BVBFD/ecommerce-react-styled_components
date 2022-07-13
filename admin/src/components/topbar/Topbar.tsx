@@ -27,7 +27,7 @@ const Topbar = () => {
             <button className='logoutBtn' onClick={handleLogout}>
               Log-out
             </button>
-            <div className='topbarIconContainer'>
+            {/* <div className='topbarIconContainer'>
               <NotificationsNone />
               <span className='topIconBadge'>2</span>
             </div>
@@ -42,7 +42,7 @@ const Topbar = () => {
               src='https://images.pexels.com/photos/1526814/pexels-photo-1526814.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500'
               alt=''
               className='topAvatar'
-            />
+            /> */}
           </div>
         </div>
       </div>

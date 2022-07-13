@@ -21,7 +21,8 @@ const UserList = () => {
     getUsers();
   }, []);
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
+    await userRequest.delete(`/users/${id}`);
     setData(data.filter((item) => item._id !== id));
   };
 
