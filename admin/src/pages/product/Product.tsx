@@ -136,8 +136,13 @@ const Product = () => {
     setIsUpdating(true);
     try {
       const result = await updateProduct(productId, update, dispatch);
-      navigate(`/product/${result._id}`);
-      window.alert('Update Finished!!');
+      if (result?._id == null) {
+        window.alert('Update Failed!!');
+        navigate(`/products`);
+      } else {
+        window.alert('Update Success!!');
+        navigate(`/product/${result?._id}`);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -167,7 +172,9 @@ const Product = () => {
               alt=''
               className='productInfoImg'
             />
-            <span className='productName'>{product?.title}</span>
+            <span className='productName'>
+              {!update?.title ? product?.title : update?.title}
+            </span>
           </div>
           <div className='productInfoBottom'>
             <div className='productInfoItem'>
@@ -181,7 +188,13 @@ const Product = () => {
             <div className='productInfoItem'>
               <span className='productInfoKey'>in stock:</span>
               <span className='productInfoValue'>
-                {product?.inStock ? 'O' : 'X'}
+                {!update?.inStock
+                  ? product?.inStock
+                    ? 'O'
+                    : 'X'
+                  : update?.inStock
+                  ? 'O'
+                  : 'X'}
               </span>
             </div>
           </div>

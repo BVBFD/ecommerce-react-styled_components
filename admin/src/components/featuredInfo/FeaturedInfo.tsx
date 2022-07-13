@@ -2,7 +2,7 @@ import React from 'react';
 import './featuredInfo.css';
 import { useEffect, useState } from 'react';
 import { ArrowDownward, ArrowUpward } from '@mui/icons-material';
-import { userRequest } from '../../requestMethods';
+import { publicRequest, userRequest } from '../../requestMethods';
 
 type IncomeType = {
   _id: number;
@@ -56,7 +56,7 @@ const FeaturedInfo = () => {
   useEffect(() => {
     const getIncome = async () => {
       try {
-        const res = await userRequest.get('/orders/income');
+        const res = await publicRequest.get('/orders/income');
         setIncome(
           res.data.sort((a: IncomeType, b: IncomeType) => a._id - b._id)
         );

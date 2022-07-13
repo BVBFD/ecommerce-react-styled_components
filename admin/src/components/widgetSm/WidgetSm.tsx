@@ -1,7 +1,7 @@
 import { Visibility } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 import { UserType } from '../../redux/userRedux';
-import { userRequest } from '../../requestMethods';
+import { publicRequest, userRequest } from '../../requestMethods';
 import './widgetSm.css';
 
 const WidgetSm = () => {
@@ -10,7 +10,7 @@ const WidgetSm = () => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const res = await userRequest.get('/users/?new=true');
+        const res = await publicRequest.get('/users/?new=true');
         setUsers(res.data);
       } catch (error) {
         console.log(error);

@@ -1,8 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import {
-  verifyTokenAndAdmin,
-  verifyTokenAndAuthorization,
-} from '../middlewares/verifyToken';
+import { verifyTokenAndAdmin } from '../middlewares/verifyToken';
 import CryptoJS from 'crypto-js';
 import User from '../models/User';
 
@@ -11,7 +8,7 @@ const router = Router();
 // update
 router.put(
   '/:id',
-  verifyTokenAndAuthorization,
+
   async (req: Request, res: Response, next: NextFunction) => {
     if (req.body.password) {
       req.body.password = CryptoJS.AES.encrypt(
@@ -39,7 +36,7 @@ router.put(
 // delete
 router.delete(
   '/:id',
-  verifyTokenAndAuthorization,
+
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await User.findByIdAndDelete(req.params.id);
@@ -54,7 +51,6 @@ router.delete(
 // get user
 router.get(
   '/find/:id',
-  verifyTokenAndAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = await User.findById(req.params.id);
@@ -70,7 +66,7 @@ router.get(
 // get all user
 router.get(
   '/',
-  verifyTokenAndAdmin,
+
   async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query.new;
     try {
@@ -88,7 +84,7 @@ router.get(
 // get user stats
 router.get(
   '/stats',
-  verifyTokenAndAdmin,
+
   async (req: Request, res: Response, next: NextFunction) => {
     const date = new Date();
     const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));

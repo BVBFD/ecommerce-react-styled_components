@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './widgetLg.css';
 import { UserType } from '../../redux/userRedux';
-import { userRequest } from '../../requestMethods';
+import { publicRequest, userRequest } from '../../requestMethods';
 import { format } from 'timeago.js';
 
 type ButtonType = {
@@ -26,7 +26,7 @@ const WidgetLg = () => {
   useEffect(() => {
     const getOrders = async () => {
       try {
-        const res = await userRequest.get('/orders');
+        const res = await publicRequest.get('/orders');
         setOrders(res.data.reverse());
       } catch (error) {
         console.log(error);

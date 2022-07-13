@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import User from '../models/User';
 import CryptoJS from 'crypto-js';
-import jwt from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 
 const router = Router();
 router.post(
@@ -53,7 +53,7 @@ router.post(
       originalPassword !== inputPassword &&
         res.status(401).json('Wrong credentials');
 
-      const accessToken = jwt.sign(
+      const accessToken = sign(
         {
           id: user!._id,
           isAdmin: user!.isAdmin,

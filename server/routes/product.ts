@@ -1,29 +1,21 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import {
-  verifyToken,
-  verifyTokenAndAdmin,
-  verifyTokenAndAuthorization,
-} from '../middlewares/verifyToken';
+import { verifyTokenAndAdmin } from '../middlewares/verifyToken';
 import Product from '../models/Product';
 
 const router = Router();
 
 // Create
-router.post(
-  '/',
-  verifyTokenAndAdmin,
-  async (req: Request, res: Response, next: NextFunction) => {
-    const newProduct = new Product(req.body);
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+  const newProduct = new Product(req.body);
 
-    try {
-      const savedProduct = await newProduct.save();
-      res.status(200).json(savedProduct);
-    } catch (error) {
-      // res.status(500).json(error);
-      console.error(error);
-    }
+  try {
+    const savedProduct = await newProduct.save();
+    res.status(200).json(savedProduct);
+  } catch (error) {
+    // res.status(500).json(error);
+    console.error(error);
   }
-);
+});
 
 // Update
 router.put(
@@ -49,7 +41,6 @@ router.put(
 // Delete
 router.delete(
   '/:id',
-  verifyTokenAndAuthorization,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await Product.findByIdAndDelete(req.params.id);

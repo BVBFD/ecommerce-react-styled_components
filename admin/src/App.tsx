@@ -28,24 +28,21 @@ const App = () => {
         <Sidebar />
         <Routes>
           <Route path={'/login'} element={!user ? <Login /> : <Home />} />
-          <Route path={'/'} element={admin ? <Home /> : <Login />} />
-          <Route path={'/users'} element={admin ? <UserList /> : <Login />} />
-          <Route
-            path={'/user/:userId'}
-            element={admin ? <User /> : <Login />}
-          />
-          <Route path={'/newUser'} element={admin ? <NewUser /> : <Login />} />
+          <Route path={'/'} element={user ? <Home /> : <Login />} />
+          <Route path={'/users'} element={user ? <UserList /> : <Login />} />
+          <Route path={'/user/:userId'} element={user ? <User /> : <Login />} />
+          <Route path={'/newUser'} element={user ? <NewUser /> : <Login />} />
           <Route
             path={'/products'}
-            element={admin ? <ProductList /> : <Login />}
+            element={user ? <ProductList /> : <Login />}
           />
           <Route
             path={'/product/:productId'}
-            element={admin ? <Product /> : <Login />}
+            element={user ? <Product /> : <Login />}
           />
           <Route
             path={'/newProduct'}
-            element={admin ? <NewProduct /> : <Login />}
+            element={user ? <NewProduct /> : <Login />}
           />
         </Routes>
       </div>
