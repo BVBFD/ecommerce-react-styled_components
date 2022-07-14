@@ -7,8 +7,6 @@ const TOKEN = USER
   : null;
 const HOST = window.location.host;
 
-console.log(process.env.REACT_APP_CSRF_TOKEN);
-
 export const publicRequest = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,

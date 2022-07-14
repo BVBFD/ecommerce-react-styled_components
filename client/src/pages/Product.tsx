@@ -152,8 +152,6 @@ const Product = () => {
     dispatch(addProduct({ ...product, quantity, color, size }));
   };
 
-  console.log(state);
-
   return (
     <Container>
       <Navbar />

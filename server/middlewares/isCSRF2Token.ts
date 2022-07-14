@@ -13,9 +13,8 @@ export const isCSRF2Token = async (
   }
 
   const validateCSRFToken =
-    csrfToken.toString() === process.env.REACT_APP_CSRF_TOKEN.toString()
-      ? true
-      : false;
+    `${process.env.REACT_APP_CSRF_TOKEN}${csrfToken}` ===
+    `${process.env.NODE_REACT_CSRF_TOKEN}`;
 
   if (!validateCSRFToken) {
     return res.status(403).json('Fail CSRF_TOKEN Check!');

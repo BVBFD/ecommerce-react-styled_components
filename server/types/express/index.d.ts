@@ -12,6 +12,7 @@ declare global {
       XSS_TOKEN: string;
       CSRF_TOKEN: string;
       REACT_APP_CSRF_TOKEN: string;
+      NODE_REACT_CSRF_TOKEN: string;
     }
   }
 

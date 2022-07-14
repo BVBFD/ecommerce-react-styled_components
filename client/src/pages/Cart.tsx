@@ -241,10 +241,6 @@ const Cart = ({ mmTk }: mmTk) => {
     setProducts(newArray);
   }, [cart.products]);
 
-  console.log(cart);
-  console.log(user);
-  console.log(products);
-
   useEffect(() => {
     const makeRequest = async () => {
       try {
