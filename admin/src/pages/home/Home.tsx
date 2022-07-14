@@ -4,12 +4,7 @@ import FeaturedInfo from '../../components/featuredInfo/FeaturedInfo';
 import Chart from '../../components/chart/Chart';
 import WidgetSm from '../../components/widgetSm/WidgetSm';
 import WidgetLg from '../../components/widgetLg/WidgetLg';
-import { userRequest } from '../../requestMethods';
-import { once } from 'events';
-import { useNavigate } from 'react-router-dom';
-
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import { publicRequest, userRequest } from '../../requestMethods';
 
 type ResType = {
   _id: number;
@@ -24,7 +19,6 @@ type UserDataType = {
 
 const Home = () => {
   const [userStats, setUserStats] = useState<UserDataType[]>([]);
-
   const MONTHS = useMemo(
     () => [
       'Jan',
@@ -43,15 +37,26 @@ const Home = () => {
     []
   );
 
-  const USER = JSON.parse(localStorage.getItem('persist:root') as string)?.user;
+  const USER = JSON.parse(
+    localStorage?.getItem('persist:root') as string
+  )?.user;
   const TOKEN = JSON.parse(USER).currentUser?.accessToken.toString();
-  console.log(TOKEN);
 
-  // 로그아웃 다른 아이디 재로그인시
-  // 로그앗된 아이디 토큰 사용되던 문제 수정
-  if (TOKEN === undefined) {
-    window.location.replace('/');
-  }
+  useEffect(() => {
+    const getXSSToken = async () => {
+      try {
+        await publicRequest.get('/getXSSToken');
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    // 로그아웃 다른 아이디 재로그인시
+    // 로그앗된 아이디 토큰 사용되던 문제 수정
+    if (TOKEN === undefined) {
+      window.location.replace('/');
+    }
+    getXSSToken();
+  }, []);
 
   useEffect(() => {
     const getStats = async () => {

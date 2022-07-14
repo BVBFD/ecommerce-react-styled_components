@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import CartProducts from '../components/CartProducts';
 import { UserState } from '../redux/userRedux';
+import { isMnTk } from '../modules/checkMmTk';
 
 type UserType = {
   _id: string;
@@ -201,13 +202,19 @@ type CartProductsType = {
   quantity: number;
 };
 
-const Cart = () => {
+type mmTk = {
+  mmTk: string;
+};
+
+const Cart = ({ mmTk }: mmTk) => {
   const user = useSelector(
     (state: RootState) => state.user.currentUser as UserType
   );
   const cart = useSelector((state: RootState) => state.cart);
   const [stripeToken, setStripeToken] = useState<Token>();
   const [products, setProducts] = useState<CartProductsType[]>([]);
+  const [mmTkResult, setMnTkResult] = useState<boolean>(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const KEY = process.env.REACT_APP_STRIPE;
@@ -215,6 +222,10 @@ const Cart = () => {
   const onToken = (token: Token) => {
     setStripeToken(token);
   };
+
+  useEffect(() => {
+    isMnTk(mmTk, setMnTkResult);
+  }, [mmTk]);
 
   useEffect(() => {
     let newArray: CartProductsType[] = [];
@@ -256,7 +267,7 @@ const Cart = () => {
       }
     };
 
-    stripeToken && makeRequest();
+    mmTkResult && stripeToken && makeRequest();
   }, [stripeToken, cart.total, navigate]);
 
   return (

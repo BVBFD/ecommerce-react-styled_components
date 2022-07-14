@@ -5,9 +5,16 @@ import { DeleteOutline } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { userRequest } from '../../requestMethods';
 import { UserType } from '../../redux/userRedux';
+import { mmTk } from '../product/Product';
+import { checkMmTk, isMnTk } from '../../module/checkMmTk';
 
-const UserList = () => {
+const UserList = ({ mmTk }: mmTk) => {
   const [data, setData] = useState<UserType[]>([]);
+  const [mmTkResult, setMnTkResult] = useState<boolean>(false);
+
+  useEffect(() => {
+    isMnTk(mmTk, setMnTkResult);
+  }, [mmTk]);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -63,7 +70,7 @@ const UserList = () => {
             </Link>
             <DeleteOutline
               className='userListDelete'
-              onClick={() => handleDelete(params.row._id)}
+              onClick={() => mmTkResult && handleDelete(params.row._id)}
             />
           </>
         );

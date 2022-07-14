@@ -11,7 +11,7 @@ import ImgStorage from '../../firebaseStorage';
 import FirebaseApp from '../../firebase';
 import { updateProduct } from '../../redux/apiCalls';
 import { useDispatch } from 'react-redux';
-import { async } from '@firebase/util';
+import { isMnTk } from '../../module/checkMmTk';
 
 type ResProductType = {
   _id: number;
@@ -23,7 +23,11 @@ type PStatsType = {
   Sales: number;
 };
 
-const Product = () => {
+type mmTk = {
+  mmTk: string;
+};
+
+const Product = ({ mmTk }: mmTk) => {
   const location = useLocation();
   const productId = location.pathname.split('/')[2];
   const [pStats, setPStats] = useState<PStatsType[]>([]);
@@ -39,6 +43,7 @@ const Product = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isUpdating, setIsUpdating] = useState(false);
+  const [mmTkResult, setMnTkResult] = useState(false);
 
   const MONTHS = useMemo(
     () => [
@@ -57,6 +62,10 @@ const Product = () => {
     ],
     []
   );
+
+  useEffect(() => {
+    isMnTk(mmTk, setMnTkResult);
+  }, [mmTk]);
 
   useEffect(() => {
     const getStats = async () => {
@@ -137,7 +146,7 @@ const Product = () => {
     try {
       const result = await updateProduct(productId, update, dispatch);
       if (result?._id == null) {
-        window.alert('Update Failed!!');
+        window.alert('Update Failed!! or Only The Admin can update!!');
         navigate(`/products`);
       } else {
         window.alert('Update Success!!');
@@ -243,7 +252,8 @@ const Product = () => {
               <input
                 disabled={isUpdating}
                 name='img'
-                onChange={handleImgUpload}
+                // @ts-ignore
+                onChange={mmTkResult && handleImgUpload}
                 type='file'
                 id='file'
                 style={{ display: 'none', cursor: 'pointer' }}
@@ -251,7 +261,8 @@ const Product = () => {
             </div>
             <button
               disabled={isUpdating}
-              onClick={handleUpdate}
+              // @ts-ignore
+              onClick={mmTkResult && handleUpdate}
               className='productButton'
             >
               {isUpdating ? 'Updating...' : 'Update'}
@@ -264,3 +275,4 @@ const Product = () => {
 };
 
 export default Product;
+export type { mmTk };

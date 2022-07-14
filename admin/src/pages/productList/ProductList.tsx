@@ -7,14 +7,21 @@ import { productRows } from '../../dummyData';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteProduct, getProducts } from '../../redux/apiCalls';
 import { RootState } from '../../redux/store';
+import { checkMmTk, isMnTk } from '../../module/checkMmTk';
+import { mmTk } from '../product/Product';
 
-const ProductList = () => {
+const ProductList = ({ mmTk }: mmTk) => {
   const dispatch = useDispatch();
   const products = useSelector((state: RootState) => state.product.products);
+  const [mmTkResult, setMnTkResult] = useState<boolean>(false);
 
   useEffect(() => {
     getProducts(dispatch);
   }, [dispatch]);
+
+  useEffect(() => {
+    isMnTk(mmTk, setMnTkResult);
+  }, [mmTk]);
 
   const handleDelete = (id: string) => {
     deleteProduct(id, dispatch);
@@ -53,7 +60,7 @@ const ProductList = () => {
             </Link>
             <DeleteOutline
               className='productListDelete'
-              onClick={() => handleDelete(params.row._id)}
+              onClick={() => mmTkResult && handleDelete(params.row._id)}
             />
           </>
         );

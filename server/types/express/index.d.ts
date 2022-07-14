@@ -9,6 +9,8 @@ declare global {
       PASS_SEC: string;
       JWT_SEC: string;
       NODE_ENV: 'development' | 'production';
+      XSS_TOKEN: string;
+      CSRF_TOKEN: string;
     }
   }
 

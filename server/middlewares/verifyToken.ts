@@ -6,9 +6,7 @@ const verifyTokenAndAdmin = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.headers.token);
   const token = req.headers.token?.toString().split(' ')[1] as string;
-  console.log(token);
 
   const checkJwt: string | JwtPayload = verify(token, process.env.JWT_SEC);
   const { isAdmin }: any = checkJwt;

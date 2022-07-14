@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
+import { getCSRFToken } from './modules/memoryToken';
 import Cart from './pages/Cart';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -13,6 +14,11 @@ import { RootState } from './redux/store';
 
 const App = () => {
   const user = useSelector((state: RootState) => state.user.currentUser);
+  const [mmTk, setMmTk] = useState<string>();
+
+  useEffect(() => {
+    getCSRFToken().then((data) => setMmTk(data));
+  }, []);
 
   return (
     <BrowserRouter>
@@ -20,7 +26,7 @@ const App = () => {
         <Route path={'/'} element={<Home />} />
         <Route path={'/products/:category'} element={<ProductList />} />
         <Route path={'/product/:id'} element={<Product />} />
-        <Route path={'/cart'} element={<Cart />} />
+        <Route path={'/cart'} element={<Cart mmTk={mmTk as string} />} />
         <Route
           path={'/login'}
           element={user ? <Navigate to='/' /> : <Login />}

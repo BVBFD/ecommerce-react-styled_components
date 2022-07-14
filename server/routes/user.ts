@@ -1,4 +1,5 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { isXSSToken } from '../middlewares/isXSSToken';
 import { verifyTokenAndAdmin } from '../middlewares/verifyToken';
 import CryptoJS from 'crypto-js';
 import User from '../models/User';
@@ -8,7 +9,8 @@ const router = Router();
 // update
 router.put(
   '/:id',
-
+  isXSSToken,
+  verifyTokenAndAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
     if (req.body.password) {
       req.body.password = CryptoJS.AES.encrypt(
@@ -36,7 +38,8 @@ router.put(
 // delete
 router.delete(
   '/:id',
-
+  isXSSToken,
+  verifyTokenAndAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await User.findByIdAndDelete(req.params.id);
@@ -64,27 +67,22 @@ router.get(
 );
 
 // get all user
-router.get(
-  '/',
-
-  async (req: Request, res: Response, next: NextFunction) => {
-    const query = req.query.new;
-    try {
-      const users = query
-        ? await User.find().sort({ _id: -1 }).limit(5)
-        : await User.find();
-      res.status(200).json(users);
-    } catch (error) {
-      // res.status(500).json(error);
-      console.error(error);
-    }
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+  const query = req.query.new;
+  try {
+    const users = query
+      ? await User.find().sort({ _id: -1 }).limit(5)
+      : await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    // res.status(500).json(error);
+    console.error(error);
   }
-);
+});
 
 // get user stats
 router.get(
   '/stats',
-
   async (req: Request, res: Response, next: NextFunction) => {
     const date = new Date();
     const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));

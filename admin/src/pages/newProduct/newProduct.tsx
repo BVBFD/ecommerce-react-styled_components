@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './newProduct.css';
 import FirebaseApp from '../../firebase';
 import { addProduct } from '../../redux/apiCalls';
 import { useDispatch } from 'react-redux';
 import ImgStorage from '../../firebaseStorage';
 import { useNavigate } from 'react-router-dom';
+import { mmTk } from '../product/Product';
+import { isMnTk } from '../../module/checkMmTk';
 
-const NewProduct = () => {
+const NewProduct = ({ mmTk }: mmTk) => {
   const [inputs, setInputs] = useState({ inStock: true });
   // const [file, setFile] = useState<File>();
   const [downloadURL, setDownloadURL] = useState<string>();
   const [cat, setCat] = useState<string[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [mmTkResult, setMnTkResult] = useState<boolean>(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const imgStorage = new ImgStorage(FirebaseApp);
+
+  useEffect(() => {
+    isMnTk(mmTk, setMnTkResult);
+  }, [mmTk]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -72,12 +80,16 @@ const NewProduct = () => {
         <div className='addProductItem'>
           <label>Image</label>
           <input
-            onChange={async (e) => {
-              if (e.target.files == null) {
-                return;
-              }
-              await imgStorage.uploadImg(e.target.files[0], setDownloadURL);
-            }}
+            // @ts-ignore
+            onChange={
+              mmTkResult &&
+              (async (e) => {
+                if (e.target.files == null) {
+                  return;
+                }
+                await imgStorage.uploadImg(e.target.files[0], setDownloadURL);
+              })
+            }
             type='file'
             id='file'
           />
@@ -143,7 +155,8 @@ const NewProduct = () => {
           </select>
         </div>
         <button
-          onClick={handleClick}
+          // @ts-ignore
+          onClick={mmTkResult && handleClick}
           className='addProductButton'
           disabled={isFetching}
         >

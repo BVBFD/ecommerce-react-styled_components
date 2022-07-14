@@ -10,6 +10,8 @@ import { Link, useParams } from 'react-router-dom';
 import './user.css';
 import { userRequest } from '../../requestMethods';
 import { UserType } from '../../redux/userRedux';
+import { mmTk } from '../product/Product';
+import { checkMmTk, isMnTk } from '../../module/checkMmTk';
 
 type UpdateType = {
   username?: UserType['username'];
@@ -17,10 +19,15 @@ type UpdateType = {
   isAdmin?: UserType['isAdmin'];
 };
 
-const User = () => {
+const User = ({ mmTk }: mmTk) => {
   const [user, setUser] = useState<UserType>();
   const { userId } = useParams();
   const [update, setUpdate] = useState<UpdateType>();
+  const [mmTkResult, setMnTkResult] = useState<boolean>(false);
+
+  useEffect(() => {
+    isMnTk(mmTk, setMnTkResult);
+  }, [mmTk]);
 
   useEffect(() => {
     const getUser = async () => {
@@ -61,8 +68,10 @@ const User = () => {
     try {
       const res = await userRequest.put(`/users/${userId}`, update);
       setUser(res.data);
+      window.alert('Update success!!');
     } catch (error) {
       console.log(error);
+      window.alert('Update Failed!! or Only The Admin can update!!');
     }
   };
 
@@ -141,7 +150,11 @@ const User = () => {
                 </select>
               </div>
               <div className='userUpdateRight'>
-                <button onClick={handleUpdateBtn} className='userUpdateButton'>
+                <button
+                  // @ts-ignore
+                  onClick={mmTkResult && handleUpdateBtn}
+                  className='userUpdateButton'
+                >
                   Update
                 </button>
               </div>

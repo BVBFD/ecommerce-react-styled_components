@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import Home from './pages/home/Home';
 import Sidebar from './components/sidebar/Sidebar';
@@ -13,13 +13,18 @@ import NewProduct from './pages/newProduct/newProduct';
 import Login from './pages/login/Login';
 import { useSelector } from 'react-redux';
 import { RootState } from './redux/store';
+import { getCSRFToken } from './module/memoryToken';
 
 const App = () => {
   const user = useSelector((state: RootState) => state.user.currentUser);
   const admin = useSelector(
     (state: RootState) => state.user.currentUser?.isAdmin
   );
-  console.log(process.env.REACT_APP_ADMIN);
+  const [mmTk, setMmTk] = useState<string>();
+
+  useEffect(() => {
+    getCSRFToken().then((data) => setMmTk(data));
+  }, []);
 
   return (
     <Router>
@@ -29,20 +34,29 @@ const App = () => {
         <Routes>
           <Route path={'/login'} element={!user ? <Login /> : <Home />} />
           <Route path={'/'} element={user ? <Home /> : <Login />} />
-          <Route path={'/users'} element={user ? <UserList /> : <Login />} />
-          <Route path={'/user/:userId'} element={user ? <User /> : <Login />} />
-          <Route path={'/newUser'} element={user ? <NewUser /> : <Login />} />
+          <Route
+            path={'/users'}
+            element={user ? <UserList mmTk={mmTk as string} /> : <Login />}
+          />
+          <Route
+            path={'/user/:userId'}
+            element={user ? <User mmTk={mmTk as string} /> : <Login />}
+          />
+          <Route
+            path={'/newUser'}
+            element={user ? <NewUser mmTk={mmTk as string} /> : <Login />}
+          />
           <Route
             path={'/products'}
-            element={user ? <ProductList /> : <Login />}
+            element={user ? <ProductList mmTk={mmTk as string} /> : <Login />}
           />
           <Route
             path={'/product/:productId'}
-            element={user ? <Product /> : <Login />}
+            element={user ? <Product mmTk={mmTk as string} /> : <Login />}
           />
           <Route
             path={'/newProduct'}
-            element={user ? <NewProduct /> : <Login />}
+            element={user ? <NewProduct mmTk={mmTk as string} /> : <Login />}
           />
         </Routes>
       </div>

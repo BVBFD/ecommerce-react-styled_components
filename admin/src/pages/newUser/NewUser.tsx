@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserType } from '../../redux/userRedux';
 import { publicRequest } from '../../requestMethods';
 import './newUser.css';
+import { mmTk } from '../product/Product';
+import { checkMmTk, isMnTk } from '../../module/checkMmTk';
 
-const NewUser = () => {
+const NewUser = ({ mmTk }: mmTk) => {
   const [user, setUser] = useState<UserType | {}>({ isAdmin: false });
   const navigate = useNavigate();
+  const [mmTkResult, setMnTkResult] = useState<boolean>(false);
+
+  useEffect(() => {
+    isMnTk(mmTk, setMnTkResult);
+  }, [mmTk]);
 
   const handleNewUser = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -96,7 +103,8 @@ const NewUser = () => {
             <option value='true'>Yes</option>
           </select>
         </div>
-        <button onClick={createNewUser} className='newUserButton'>
+        {/* @ts-ignore */}
+        <button onClick={mmTkResult && createNewUser} className='newUserButton'>
           Create
         </button>
       </form>
