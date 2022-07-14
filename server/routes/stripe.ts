@@ -1,3 +1,4 @@
+import { isCSRF2Token } from './../middlewares/isCSRF2Token';
 import { Router, Request, Response, NextFunction } from 'express';
 import Stripe from 'stripe';
 
@@ -10,6 +11,7 @@ const stripe = new Stripe(process.env.STRIPE_KEY, {
 
 router.post(
   '/payment',
+  isCSRF2Token,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await stripe.charges.create(

@@ -8,7 +8,6 @@ export const isCSRFToken = async (
 ) => {
   const { mmTk } = req.body;
   const csrfToken = mmTk;
-  console.log(csrfToken);
 
   if (!csrfToken) {
     return res.status(404).json(false);

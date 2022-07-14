@@ -12,6 +12,8 @@ export const publicRequest = axios.create({
   withCredentials: true,
   headers: {
     origin: `http://${HOST}`,
+    // @ts-ignore
+    CSRF_TOKEN: process.env.REACT_APP_CSRF_TOKEN,
   },
 });
 
@@ -21,5 +23,7 @@ export const userRequest = axios.create({
   headers: {
     token: `Bearer ${TOKEN}`,
     origin: `http://${HOST}`,
+    // @ts-ignore
+    CSRF_TOKEN: process.env.REACT_APP_CSRF_TOKEN,
   },
 });

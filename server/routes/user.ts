@@ -1,3 +1,4 @@
+import { isCSRF2Token } from './../middlewares/isCSRF2Token';
 import { Router, Request, Response, NextFunction } from 'express';
 import { isXSSToken } from '../middlewares/isXSSToken';
 import { verifyTokenAndAdmin } from '../middlewares/verifyToken';
@@ -10,6 +11,7 @@ const router = Router();
 router.put(
   '/:id',
   isXSSToken,
+  isCSRF2Token,
   verifyTokenAndAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
     if (req.body.password) {
@@ -39,6 +41,7 @@ router.put(
 router.delete(
   '/:id',
   isXSSToken,
+  isCSRF2Token,
   verifyTokenAndAdmin,
   async (req: Request, res: Response, next: NextFunction) => {
     try {

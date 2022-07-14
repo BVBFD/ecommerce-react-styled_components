@@ -11,6 +11,7 @@ declare global {
       NODE_ENV: 'development' | 'production';
       XSS_TOKEN: string;
       CSRF_TOKEN: string;
+      REACT_APP_CSRF_TOKEN: string;
     }
   }
 
