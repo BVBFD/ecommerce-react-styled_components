@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 import CartProducts from '../components/CartProducts';
 import { UserState } from '../redux/userRedux';
 import { isMnTk } from '../modules/checkMmTk';
+import { Link } from 'react-router-dom';
 
 type UserType = {
   _id: string;
@@ -273,12 +274,14 @@ const Cart = ({ mmTk }: mmTk) => {
       <Wrapper>
         <Title>YOUR BAG</Title>
         <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
+          <Link to='/'>
+            <TopButton>CONTINUE SHOPPING</TopButton>
+          </Link>
           <TopTexts>
-            <TopText>Shopping Bag(2)</TopText>
-            <TopText>Your Wishlist (0)</TopText>
+            {/* <TopText>Shopping Bag(2)</TopText>
+            <TopText>Your Wishlist (0)</TopText> */}
           </TopTexts>
-          <TopButton status='filled'>CHECKOUT NOW</TopButton>
+          {/* <TopButton status='filled'>CHECKOUT NOW</TopButton> */}
         </Top>
         <Bottom>
           <Info>

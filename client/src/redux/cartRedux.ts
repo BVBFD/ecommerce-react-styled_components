@@ -44,11 +44,16 @@ const cartSlice = createSlice({
       );
       state.total -= action.payload.product.price * action.payload.quantity;
     },
+    emptyProduct: (state) => {
+      state.quantity = 0;
+      state.products = [];
+      state.total = 0;
+    },
   },
 });
 
 export type { CartProductObjType };
-export const { addProduct, removeProduct } = cartSlice.actions;
+export const { addProduct, removeProduct, emptyProduct } = cartSlice.actions;
 // reducer 함수 수행하기 위해..
 export default cartSlice.reducer;
 // reducer, state 상태 정보를 보관하는 store 객체를 만들기 위해..

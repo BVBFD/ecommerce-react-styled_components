@@ -11,6 +11,7 @@ import { logOut } from '../redux/userRedux';
 
 const Container = styled.div`
   height: 60px;
+  width: 100vw;
   ${mobile({ height: '50px' })}
 `;
 
@@ -30,7 +31,7 @@ const Left = styled.div`
 
 const Language = styled.span`
   font-size: 14px;
-  cursor: pointer;
+  /* cursor: pointer; */
   ${mobile({ display: 'none' })}
 `;
 
@@ -86,14 +87,16 @@ const Navbar = () => {
       <Wrapper>
         <Left>
           <Language>EN</Language>
-          <SearchContainer>
+          {/* <SearchContainer>
             <Input placeholder='Search' />
             <Search style={{ color: 'gray', fontSize: 16 }} />
-          </SearchContainer>
+          </SearchContainer> */}
         </Left>
-        <Center>
-          <Logo>Leo</Logo>
-        </Center>
+        <Link to='/'>
+          <Center>
+            <Logo>Leo</Logo>
+          </Center>
+        </Link>
         <Right>
           <Link to={'/register'}>
             <MenuItem>REGISTER</MenuItem>
