@@ -1,5 +1,6 @@
 import { Visibility } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { UserType } from '../../redux/userRedux';
 import { publicRequest, userRequest } from '../../requestMethods';
 import './widgetSm.css';
@@ -36,10 +37,12 @@ const WidgetSm = () => {
             <div className='widgetSmUser'>
               <span className='widgetSmUsername'>{user?.username}</span>
             </div>
-            <button className='widgetSmButton'>
-              <Visibility className='widgetSmIcon' />
-              Display
-            </button>
+            <Link to={`/user/${user?._id}`}>
+              <button className='widgetSmButton'>
+                <Visibility className='widgetSmIcon' />
+                Display
+              </button>
+            </Link>
           </li>
         ))}
       </ul>

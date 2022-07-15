@@ -3,7 +3,12 @@ import './App.css';
 import Home from './pages/home/Home';
 import Sidebar from './components/sidebar/Sidebar';
 import Topbar from './components/topbar/Topbar';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from 'react-router-dom';
 import UserList from './pages/userList/UserList';
 import User from './pages/user/User';
 import NewUser from './pages/newUser/NewUser';
@@ -32,7 +37,7 @@ const App = () => {
       <div className='container'>
         <Sidebar />
         <Routes>
-          <Route path={'/login'} element={!user ? <Login /> : <Home />} />
+          <Route path={'/login'} element={<Login />} />
           <Route path={'/'} element={user ? <Home /> : <Login />} />
           <Route
             path={'/users'}

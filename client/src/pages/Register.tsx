@@ -1,5 +1,10 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { signUp, UserType } from '../redux/apiCalls';
+import { RootState } from '../redux/store';
 import { mobile } from '../responsive';
 
 const Container = styled.div`
@@ -55,22 +60,62 @@ const Button = styled.button`
 `;
 
 const Register = () => {
+  const [regInfo, setRegInfo] = useState<UserType>();
+  const [pwdCheckRef, setPwdCheckRef] = useState<string>();
+  const dispatch = useDispatch();
+  const isFetching = useSelector((state: RootState) => state.user.isFetching);
+  const navigate = useNavigate();
+
+  const onRegister = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (regInfo?.password !== pwdCheckRef) {
+      window.alert('Unmatched between password and confirm password');
+    }
+    try {
+      signUp(dispatch, regInfo as UserType);
+      navigate('/login');
+    } catch (error) {
+      window.alert(error);
+    }
+  };
+
+  const regInfoOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRegInfo({ ...regInfo, [e.target.name]: e.target.value });
+  };
+
   return (
     <Container>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
-        <Form>
-          <Input placeholder='name' />
-          <Input placeholder='last name' />
-          <Input placeholder='username' />
-          <Input placeholder='email' />
-          <Input placeholder='password' />
-          <Input placeholder='confirm password' />
+        <Form onSubmit={onRegister}>
+          {/* <Input placeholder='name' />
+          <Input placeholder='last name' /> */}
+          <Input
+            onChange={regInfoOnChange}
+            name='username'
+            placeholder='username'
+          />
+          <Input onChange={regInfoOnChange} name='email' placeholder='email' />
+          <Input
+            onChange={regInfoOnChange}
+            name='password'
+            type='password'
+            placeholder='password'
+          />
+          <Input
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setPwdCheckRef(e.target.value)
+            }
+            type='password'
+            placeholder='confirm password'
+          />
           <Agreement>
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
           </Agreement>
-          <Button>CREATE</Button>
+          <Button disabled={isFetching} type='submit'>
+            {isFetching ? 'CREATING...' : 'CREATE'}
+          </Button>
         </Form>
       </Wrapper>
     </Container>

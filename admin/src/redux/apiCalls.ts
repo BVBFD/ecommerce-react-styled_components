@@ -38,6 +38,7 @@ export const login = async (dispatch: Dispatch, user: LoginTryType) => {
     dispatch(loginSuccess(res.data));
   } catch (error) {
     dispatch(loginFailure());
+    window.alert('Wrong login info!!');
   }
 };
 
@@ -52,6 +53,7 @@ export const getProducts = async (dispatch: Dispatch) => {
     dispatch(getProductSuccess(res.data));
   } catch (error) {
     dispatch(getProductFailure());
+    window.alert(error);
   }
 };
 
@@ -62,6 +64,7 @@ export const deleteProduct = async (id: string, dispatch: Dispatch) => {
     dispatch(deleteProductSuccess(id));
   } catch (error) {
     dispatch(deleteProductFailure());
+    window.alert(error);
   }
 };
 
@@ -77,6 +80,7 @@ export const updateProduct = async (
     return res.data;
   } catch (error) {
     dispatch(updateProductFailure);
+    window.alert(error);
   }
 };
 
@@ -88,5 +92,6 @@ export const addProduct = async (product: ProductType, dispatch: Dispatch) => {
     return res.data;
   } catch (error) {
     dispatch(addProductFailure());
+    window.alert(error);
   }
 };

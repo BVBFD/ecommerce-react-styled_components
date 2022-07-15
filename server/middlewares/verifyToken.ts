@@ -14,7 +14,7 @@ const verifyTokenAndAdmin = async (
   if (isAdmin) {
     next();
   } else {
-    res.sendStatus(401);
+    res.status(401).json('Only the admin can edit!!');
   }
 };
 

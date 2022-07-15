@@ -32,12 +32,29 @@ const userSlice = createSlice({
       state.isFetching = false;
       state.error = false;
     },
+    signUpStart: (state) => {
+      state.isFetching = true;
+    },
+    signUpSuccess: (state) => {
+      state.isFetching = false;
+    },
+    signUpFailure: (state) => {
+      state.isFetching = false;
+      state.error = true;
+    },
   },
 });
 
 export type { UserState };
-export const { loginStart, loginSuccess, loginFailure, logOut } =
-  userSlice.actions;
+export const {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  logOut,
+  signUpStart,
+  signUpSuccess,
+  signUpFailure,
+} = userSlice.actions;
 // reducer 함수 수행하기 위해..
 export default userSlice.reducer;
 // reducer, state 상태 정보를 보관하는 store 객체를 만들기 위해..
