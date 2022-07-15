@@ -75,7 +75,7 @@ const ProductList = ({ mmTk }: mmTk) => {
         disableSelectionOnClick
         columns={columns}
         getRowId={(row) => row._id}
-        pageSize={8}
+        pageSize={14}
         checkboxSelection
       />
       <Link to='/newProduct'>

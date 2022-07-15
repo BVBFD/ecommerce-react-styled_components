@@ -27,12 +27,12 @@ const Left = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
+  ${mobile({ display: 'none' })}
 `;
 
 const Language = styled.span`
   font-size: 14px;
   /* cursor: pointer; */
-  ${mobile({ display: 'none' })}
 `;
 
 const SearchContainer = styled.span`
@@ -63,7 +63,7 @@ const Right = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  ${mobile({ flex: 2, justifyContent: 'center' })}
+  ${mobile({ flex: 2, justifyContent: 'flexend' })}
 `;
 
 const MenuItem = styled.div`
@@ -94,7 +94,7 @@ const Navbar = () => {
         </Left>
         <Link to='/'>
           <Center>
-            <Logo>Leo</Logo>
+            <Logo>LEO</Logo>
           </Center>
         </Link>
         <Right>

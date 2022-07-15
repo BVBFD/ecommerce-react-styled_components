@@ -39,6 +39,24 @@ const Select = styled.select`
 
 const Option = styled.option``;
 
+const TotalBtn = styled.button`
+  padding: 10px 15px;
+  margin-right: 20px;
+  background-color: white;
+  cursor: pointer;
+  ${mobile({ margin: '10px 0px' })}
+
+  &:hover {
+    background-color: darkgray;
+    color: white;
+    font-weight: 600;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
 const ProductList = () => {
   const location = useLocation();
   const cat = location.pathname.split('/')[2];
@@ -53,6 +71,10 @@ const ProductList = () => {
     });
   };
 
+  const onTotalHandle = () => {
+    setFilters({});
+  };
+
   return (
     <Container>
       <Navbar />
@@ -61,6 +83,7 @@ const ProductList = () => {
       <FilterContainer>
         <Filter>
           <FilterText>Filter Products:</FilterText>
+          <TotalBtn onClick={onTotalHandle}>Total</TotalBtn>
           <Select name='color' onChange={handleFilters}>
             <Option disabled>Color</Option>
             <Option>White</Option>

@@ -24,6 +24,7 @@ const Container = styled.div`
   display: flex;
   position: relative;
   overflow: hidden;
+  user-select: none;
   ${mobile({ display: 'none' })}
 `;
 
@@ -67,7 +68,7 @@ const ImgContainer = styled.div`
 `;
 
 const Image = styled.img`
-  height: 80%;
+  height: 100%;
 `;
 
 const InfoContainer = styled.div`
@@ -81,7 +82,7 @@ const Title = styled.h1`
 
 const Desc = styled.p`
   margin: 50px 0px;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: 500;
   letter-spacing: 3px;
 `;
@@ -116,7 +117,7 @@ const Slider = () => {
             <InfoContainer>
               <Title>{item.title}</Title>
               <Desc>{item.desc}</Desc>
-              <Button>SHOW NOW</Button>
+              {/* <Button>SHOW NOW</Button> */}
             </InfoContainer>
           </Slide>
         ))}

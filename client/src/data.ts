@@ -1,21 +1,21 @@
 export const sliderItems = [
   {
     id: 1,
-    img: '../imgs/sliderItems/3.png',
+    img: 'https://firebasestorage.googleapis.com/v0/b/ecommerce-d4a67.appspot.com/o/3.png?alt=media&token=dfcb921d-8928-4650-b272-fbbea28d1a86',
     title: 'SUMMER SALE',
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
     bg: 'f5fafd',
   },
   {
     id: 2,
-    img: '../imgs/sliderItems/2.png',
+    img: 'https://firebasestorage.googleapis.com/v0/b/ecommerce-d4a67.appspot.com/o/2.png?alt=media&token=c859861b-6e68-4af9-a8bd-19ce81bc9e94',
     title: 'AUTUMN COLLECTION',
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
     bg: 'fcf1ed',
   },
   {
     id: 3,
-    img: '../imgs/sliderItems/5.png',
+    img: 'https://firebasestorage.googleapis.com/v0/b/ecommerce-d4a67.appspot.com/o/5.png?alt=media&token=d3200f51-9387-489e-adc2-1b82a2b778e3',
     title: 'LOUNGEWEAR LOVE',
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
     bg: 'fbf0f4',
@@ -25,51 +25,14 @@ export const sliderItems = [
 export const categories = [
   {
     id: 1,
-    img: 'https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+    img: 'https://firebasestorage.googleapis.com/v0/b/ecommerce-d4a67.appspot.com/o/pexels-photo-5886041.webp?alt=media&token=6a484526-598e-405e-a652-c38ff8f44d58',
     title: 'WOMEN',
     cat: 'women',
   },
   {
     id: 2,
-    img: 'https://static01.nyt.com/images/2020/01/16/t-magazine/fashion/tparisfw-slide-C0E7/tparisfw-slide-C0E7-mobileMasterAt3x.jpg',
+    img: 'https://firebasestorage.googleapis.com/v0/b/ecommerce-d4a67.appspot.com/o/tparisfw-slide-C0E7-mobileMasterAt3x.jpg?alt=media&token=bb5215ad-8b66-4f5f-909f-2d745f567766',
     title: 'MAN',
     cat: 'man',
   },
 ];
-
-export const popularProducts = [
-  {
-    id: 1,
-    img: 'https://d3o2e4jr3mxnm3.cloudfront.net/Mens-Jake-Guitar-Vintage-Crusher-Tee_68382_1_lg.png',
-  },
-  {
-    id: 2,
-    img: 'https://www.pngmart.com/files/17/Girl-Short-Dress-PNG-Clipart.png',
-  },
-  {
-    id: 3,
-    img: 'https://www.prada.com/content/dam/pradanux_products/U/UCS/UCS319/1YOTF010O/UCS319_1YOT_F010O_S_182_SLF.png',
-  },
-  {
-    id: 4,
-    img: 'https://www.burdastyle.com/pub/media/catalog/product/cache/7bd3727382ce0a860b68816435d76e26/107/BUS-PAT-BURTE-1320516/1170x1470_BS_2016_05_132_front.png',
-  },
-  {
-    id: 5,
-    img: 'https://images.ctfassets.net/5gvckmvm9289/3BlDoZxSSjqAvv1jBJP7TH/65f9a95484117730ace42abf64e89572/Noissue-x-Creatsy-Tote-Bag-Mockup-Bundle-_4_-2.png',
-  },
-  {
-    id: 6,
-    img: 'https://d3o2e4jr3mxnm3.cloudfront.net/Rocket-Vintage-Chill-Cap_66374_1_lg.png',
-  },
-  {
-    id: 7,
-    img: 'https://www.pngmart.com/files/8/Dress-Shirt-PNG-Free-Image.png',
-  },
-  {
-    id: 8,
-    img: 'https://www.pngarts.com/files/3/Women-Jacket-PNG-High-Quality-Image.png',
-  },
-];
-
-[1, 2].sort();

@@ -25,7 +25,7 @@ const Desc = styled.div`
 `;
 
 const InputContainer = styled.div`
-  width: 50%;
+  width: 10%;
   height: 40px;
   background-color: white;
   display: flex;
@@ -40,8 +40,11 @@ const Input = styled.input`
   padding-left: 20px;
 `;
 
-const Button = styled.button`
+const Button = styled.a`
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
   background-color: teal;
   color: white;
@@ -55,12 +58,13 @@ const Button = styled.button`
 const Newsletter = () => {
   return (
     <Container>
-      <Title>Newsletter</Title>
-      <Desc>Get timely updates from your favorite products.</Desc>
+      <Title>Questions</Title>
+      <Desc>Feel free to contact us anytime!</Desc>
       <InputContainer>
-        <Input placeholder='Your email' />
-        <Button>
-          <Send />
+        {/* <Input placeholder='Your email' /> */}
+        <Button href='mailto:lsevina126@gmail.com?subject=안녕하세요!&body=문의사항을 적어서 보내주세요!'>
+          <Send style={{ marginRight: '12px' }} />
+          Click To Us By Email
         </Button>
       </InputContainer>
     </Container>

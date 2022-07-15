@@ -111,7 +111,7 @@ const Footer = () => {
         </SocialContainer>
       </Left>
       <Center>
-        <Title>UseFul Links</Title>
+        {/* <Title>UseFul Links</Title>
         <List>
           <ListItem>Home</ListItem>
           <ListItem>Cart</ListItem>
@@ -123,13 +123,13 @@ const Footer = () => {
           <ListItem>Wishlist</ListItem>
           <ListItem>Wishlist</ListItem>
           <ListItem>Terms</ListItem>
-        </List>
+        </List> */}
       </Center>
       <Right>
         <Title>Contact</Title>
         <ContactItem>
           <Room style={{ marginRight: '10px' }} />
-          622 Dixie Path, South Tobinchester 98336
+          231 Busan Apt, South Korea
         </ContactItem>
         <ContactItem>
           <Phone style={{ marginRight: '10px' }} />
@@ -139,7 +139,7 @@ const Footer = () => {
           <MailOutline style={{ marginRight: '10px' }} />
           lsevina126@gmail.com
         </ContactItem>
-        <Payment src='https://i.ibb.co/Qfvn4z6/payment.png' />
+        <Payment src='https://firebasestorage.googleapis.com/v0/b/ecommerce-d4a67.appspot.com/o/payment.png?alt=media&token=6466ec78-adfa-442c-8e62-b95c6d2633e6' />
       </Right>
     </Container>
   );
