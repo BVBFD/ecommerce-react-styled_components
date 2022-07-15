@@ -37,7 +37,7 @@ const ProductList = ({ mmTk }: mmTk) => {
         return (
           <div className='productListItem'>
             <img className='productListImg' src={params.row.img} alt='' />
-            {params.row.name}
+            {params.row.title}
           </div>
         );
       },
