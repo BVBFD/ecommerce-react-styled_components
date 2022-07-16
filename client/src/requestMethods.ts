@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080/api';
+const BASE_URL = 'https://ecommerceprojectserver.herokuapp.com/api';
 const USER = JSON.parse(localStorage?.getItem('persist:root') as string)?.user;
 const TOKEN = USER
   ? JSON.parse(USER).currentUser?.accessToken.toString()
