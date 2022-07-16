@@ -1,4 +1,3 @@
-import bcrypt from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
 
 export const isCSRF2Token = async (

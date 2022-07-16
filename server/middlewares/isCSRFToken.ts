@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs';
+import { compare } from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
 
 export const isCSRFToken = async (
@@ -13,7 +13,7 @@ export const isCSRFToken = async (
     return res.status(404).json(false);
   }
 
-  const validateCSRFToken = bcrypt.compare(csrfToken, process.env.CSRF_TOKEN);
+  const validateCSRFToken = compare(csrfToken, process.env.CSRF_TOKEN);
 
   if (!validateCSRFToken) {
     return res.status(403).json(false);

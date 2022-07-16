@@ -14,7 +14,7 @@ const Container = styled.div`
       rgba(255, 255, 255, 0.5),
       rgba(255, 255, 255, 0.5)
     ),
-    url('https://images.pexels.com/photos/6984661/pexels-photo-6984661.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940')
+    url('https://firebasestorage.googleapis.com/v0/b/ecommerce-d4a67.appspot.com/o/pexels-photo-6984661.jpeg?alt=media&token=89662e3d-c542-427f-ae60-45519f5d75ae')
       center;
   display: flex;
   align-items: center;

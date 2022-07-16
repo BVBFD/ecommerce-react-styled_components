@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs';
+import { compare } from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
 
 export const isXSSToken = async (
@@ -12,7 +12,7 @@ export const isXSSToken = async (
     return res.status(403).json('Fail Auth XSS_TOKEN');
   }
 
-  const validateXSSToken = bcrypt.compare(xssToken, process.env.XSS_TOKEN);
+  const validateXSSToken = compare(xssToken, process.env.XSS_TOKEN);
 
   if (!validateXSSToken) {
     return res.status(403).json('Fail Auth XSS_TOKEN Check');

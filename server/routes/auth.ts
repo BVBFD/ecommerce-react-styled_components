@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import User from '../models/User';
-import CryptoJS from 'crypto-js';
+// import CryptoJS from 'crypto-js';
+const CryptoJS = require('crypto-js');
 import { sign } from 'jsonwebtoken';
 
 const router = Router();

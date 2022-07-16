@@ -2,7 +2,8 @@ import { isCSRF2Token } from './../middlewares/isCSRF2Token';
 import { Router, Request, Response, NextFunction } from 'express';
 import { isXSSToken } from '../middlewares/isXSSToken';
 import { verifyTokenAndAdmin } from '../middlewares/verifyToken';
-import CryptoJS from 'crypto-js';
+// import CryptoJS from 'crypto-js';
+const CryptoJS = require('crypto-js');
 import User from '../models/User';
 
 const router = Router();

@@ -1,12 +1,19 @@
-import 'dotenv/config';
-// es6에서 express import 하기전에 dotenv config 설정을 해줘야 에러가 안남!!
-import express, { NextFunction, Request, Response } from 'express';
-import helmet from 'helmet';
-import cors from 'cors';
-import morgan from 'morgan';
+// import * as dotenv from 'dotenv';
+const dotenv = require('dotenv');
+// import * as express from 'express';
+const express = require('express');
+import { NextFunction, Request, Response } from 'express';
+// import * as helmet from 'helmet';
+const helmet = require('helmet');
+// import * as cors from 'cors';
+const cors = require('cors');
+// import * as morgan from 'morgan';
+const morgan = require('morgan');
 import mongoose from 'mongoose';
-import cookieParser from 'cookie-parser';
-import bcrypt from 'bcryptjs';
+// import * as cookieParser from 'cookie-parser';
+const cookieParser = require('cookie-parser');
+// import * as bcrypt from 'bcryptjs';
+const bcrypt = require('bcryptjs');
 
 import userRouter from './routes/user';
 import authRouter from './routes/auth';
@@ -15,6 +22,8 @@ import cartRoute from './routes/cart';
 import orderRoute from './routes/order';
 import stripeRoute from './routes/stripe';
 import { isCSRFToken } from './middlewares/isCSRFToken';
+
+dotenv.config();
 
 const app = express();
 
