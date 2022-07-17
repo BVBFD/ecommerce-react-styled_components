@@ -55,7 +55,8 @@ app.get(
       });
       res.status(200).json(`X토큰 생성!!`);
     } catch (error) {
-      console.log(error);
+      res.status(500).json(error);
+      // console.log(error);
     }
   }
 );
@@ -67,7 +68,8 @@ app.get(
       const CSRF_TOKEN = await bcrypt.hash(process.env.CSRF_TOKEN, 1);
       res.status(201).json(CSRF_TOKEN);
     } catch (error) {
-      console.log(error);
+      res.status(500).json(error);
+      // console.log(error);
     }
   }
 );

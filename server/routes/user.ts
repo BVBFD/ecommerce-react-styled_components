@@ -32,8 +32,8 @@ router.put(
       );
       res.status(200).json(updatedUser);
     } catch (error) {
-      // res.status(500).json(error);
-      console.error(error);
+      res.status(500).json(error);
+      // console.error(error);
     }
   }
 );
@@ -49,8 +49,8 @@ router.delete(
       await User.findByIdAndDelete(req.params.id);
       res.status(200).json('User has been deleted...');
     } catch (error) {
-      // res.status(500).json(error);
-      console.error(error);
+      res.status(500).json(error);
+      // console.error(error);
     }
   }
 );
@@ -64,8 +64,8 @@ router.get(
       const { password, ...others } = user!._doc;
       res.status(200).json(others);
     } catch (error) {
-      // res.status(500).json(error);
-      console.error(error);
+      res.status(500).json(error);
+      // console.error(error);
     }
   }
 );
@@ -79,8 +79,8 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
       : await User.find();
     res.status(200).json(users);
   } catch (error) {
-    // res.status(500).json(error);
-    console.error(error);
+    res.status(500).json(error);
+    // console.error(error);
   }
 });
 
@@ -99,8 +99,8 @@ router.get(
       ]);
       res.status(200).json(data);
     } catch (error) {
-      // res.status(500).json(error);
-      console.error(error);
+      res.status(500).json(error);
+      // console.error(error);
     }
   }
 );

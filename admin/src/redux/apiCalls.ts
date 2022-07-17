@@ -1,12 +1,5 @@
 import { Dispatch } from '@reduxjs/toolkit';
-import {
-  loginFailure,
-  loginStart,
-  loginSuccess,
-  ProductType,
-  logout,
-  UserType,
-} from './userRedux';
+import { loginFailure, loginStart, loginSuccess, logout } from './userRedux';
 import * as ProductInfoType from './productRedux';
 import { publicRequest, userRequest } from '../requestMethods';
 import {
@@ -70,7 +63,7 @@ export const deleteProduct = async (id: string, dispatch: Dispatch) => {
 
 export const updateProduct = async (
   id: string,
-  product: ProductType | ProductType2,
+  product: ProductType2,
   dispatch: Dispatch
 ) => {
   dispatch(updateProductStart());
@@ -84,7 +77,7 @@ export const updateProduct = async (
   }
 };
 
-export const addProduct = async (product: ProductType, dispatch: Dispatch) => {
+export const addProduct = async (product: ProductType2, dispatch: Dispatch) => {
   dispatch(addProductStart());
   try {
     const res = await userRequest.post(`/products`, product);

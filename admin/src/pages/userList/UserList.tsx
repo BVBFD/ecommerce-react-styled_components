@@ -33,7 +33,7 @@ const UserList = ({ mmTk }: mmTk) => {
       await userRequest.delete(`/users/${id}`);
       setData(data.filter((item) => item._id !== id));
     } catch (error) {
-      window.alert(error);
+      window.alert('Only the admin can edit!!');
     }
   };
 

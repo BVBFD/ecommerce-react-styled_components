@@ -7,12 +7,13 @@ import ImgStorage from '../../firebaseStorage';
 import { useNavigate } from 'react-router-dom';
 import { mmTk } from '../product/Product';
 import { isMnTk } from '../../module/checkMmTk';
+import { ProductType } from '../../redux/productRedux';
 
 const NewProduct = ({ mmTk }: mmTk) => {
   const [inputs, setInputs] = useState({ inStock: true });
   // const [file, setFile] = useState<File>();
   const [downloadURL, setDownloadURL] = useState<string>();
-  const [cat, setCat] = useState<string[]>([]);
+  const [cat, setCat] = useState<ProductType['categories']>();
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [mmTkResult, setMnTkResult] = useState<boolean>(false);
 
@@ -45,29 +46,37 @@ const NewProduct = ({ mmTk }: mmTk) => {
   };
 
   const handleCat = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCat(e.target.value.split(','));
+    setCat(e.target.value.split(',') as ProductType['categories']);
   };
 
   const handleClick = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsFetching(true);
 
-    if (!downloadURL) {
-      return;
-    }
+    // if (!mmTkResult) {
+    //   window.alert('Not Authenticated Admin!!');
+    //   setIsFetching(false);
+    //   return;
+    // }
 
-    const product = {
+    // if (!downloadURL) {
+    //   setIsFetching(false);
+    //   return;
+    // }
+
+    const product: ProductType = {
       ...inputs,
       img: downloadURL,
       categories: cat,
     };
 
     try {
-      // @ts-ignore
       const result = await addProduct(product, dispatch);
       navigate(`/product/${result._id}`);
     } catch (error) {
-      console.log(error);
+      window.alert(
+        `You should put all infomation of new product or Only the admin can edit!!`
+      );
     }
 
     setIsFetching(false);
@@ -155,8 +164,7 @@ const NewProduct = ({ mmTk }: mmTk) => {
           </select>
         </div>
         <button
-          // @ts-ignore
-          onClick={mmTkResult && handleClick}
+          onClick={handleClick}
           className='addProductButton'
           disabled={isFetching}
         >

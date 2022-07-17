@@ -24,7 +24,11 @@ const ProductList = ({ mmTk }: mmTk) => {
   }, [mmTk]);
 
   const handleDelete = (id: string) => {
-    deleteProduct(id, dispatch);
+    try {
+      deleteProduct(id, dispatch);
+    } catch (error) {
+      window.alert('Only the admin can edit!');
+    }
   };
 
   const columns: GridColDef[] = [

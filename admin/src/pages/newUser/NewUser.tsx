@@ -5,11 +5,15 @@ import { publicRequest } from '../../requestMethods';
 import './newUser.css';
 import { mmTk } from '../product/Product';
 import { checkMmTk, isMnTk } from '../../module/checkMmTk';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { is } from 'immer/dist/internal';
 
 const NewUser = ({ mmTk }: mmTk) => {
   const [user, setUser] = useState<UserType | {}>({ isAdmin: false });
   const navigate = useNavigate();
   const [mmTkResult, setMnTkResult] = useState<boolean>(false);
+  const { isFetching } = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     isMnTk(mmTk, setMnTkResult);
@@ -45,10 +49,9 @@ const NewUser = ({ mmTk }: mmTk) => {
       console.log(res);
       navigate(`/user/${res.data._id}`);
     } catch (error) {
-      console.log(error);
+      window.alert(`${error} or Only the admin can edit!!`);
     }
   };
-  console.log(user);
 
   return (
     <div className='newUser'>
@@ -103,9 +106,13 @@ const NewUser = ({ mmTk }: mmTk) => {
             <option value='true'>Yes</option>
           </select>
         </div>
-        {/* @ts-ignore */}
-        <button onClick={mmTkResult && createNewUser} className='newUserButton'>
-          Create
+        <button
+          disabled={isFetching}
+          // @ts-ignore
+          onClick={mmTkResult && createNewUser}
+          className='newUserButton'
+        >
+          {isFetching ? 'Uploading...' : 'Create'}
         </button>
       </form>
     </div>
